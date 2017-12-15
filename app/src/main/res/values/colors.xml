@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#d81e06</color>
+    <color name="colorPrimaryDark">#d81e06</color>
+    <color name="colorAccent">#d81e06</color>
+    <color name="grayLighter">#dddddd</color>
+    <color name="gray">@android:color/darker_gray</color>
+    <color name="black">@android:color/black</color>
+    <color name="white">@android:color/white</color>
+    <color name="blue">#3F51B5</color>
+
+    <color name="test">#418e2d</color>
+
+    <color name="icons">#FFFFFF</color>
+    <color name="orange">#F15A24</color>
+    <color name="dark_orange">#FFBB26</color>
+    <color name="yellow">#F79D34</color>
+    <color name="red">#eb1c23</color>
+    <color name="red_setting">#FFE76162</color>
+    <color name="circle_gray">#81848A</color>
+    <color name="bg_banner_default">#c7c7c7</color>
+
+    <!--font color -->
+    <color name="font_user_center_gray">#808080</color>
+    <color name="font_main_gray_light">#999999</color>
+    <color name="font_main_gray_light_transparent">#80999999</color>
+    <color name="bg_schedule">#50999999</color>
+    <color name="font_main_gray">#666666</color>
+    <color name="font_main_medium_darker">#333333</color>
+    <color name="font_main_medium_darker_111111">#111111</color>
+    <color name="font_main_medium_darker_transparent">#73333333</color>
+    <color name="font_main_darker">@android:color/black</color>
+    <color name="font_typeselect_gray">#4d4d4d</color>
+    <color name="font_typeselect_green">#6bb956</color>
+    <color name="font_search_hint">#4e4e4e</color>
+    <color name="font_expert_course">#939393</color>
+    <color name="font_empty_view">#FFD9D9D9</color>
+    <color name="font_error_button">#CC848689</color>
+    <color name="font_error_text">#FF848689</color>
+    <color name="font_search">#d1d1d1</color>
+    <color name="order_payed">#39b64b</color>
+    <color name="order_refund">#808080</color>
+    <color name="order_un_payed">#eb1c23</color>
+
+    <!--background color-->
+    <color name="line">#F2F2F2</color>
+    <color name="line_expert">#e6e6e6</color>
+    <color name="line_video_list">#E3E3E3</color>
+    <color name="line_dark">#BEBEBE</color>
+    <color name="line_online_popu_dark">#DEDEDE</color>
+    <color name="easy_dialog_background">#bb000000</color>
+    <color name="main_fragment_item_background">#F9F9F9</color>
+
+    <color name="imoocstyle">#CA0612</color>
+    <color name="lable_sales">#FE0000</color>
+    <color name="default_background_label">#6eb756</color>
+    <color name="transparent_background">#e0000000</color>
+    <color name="theme_secondary_text_inverted">#8affffff</color>
+
+    <color name="divider_color">#55504a</color>
+    <color name="biz_audio_progress_bg">#6eb756</color>
+    <color name="biz_audio_progress_first">#ffffff</color>
+    <color name="biz_audio_progress_second">#6b6666</color>
+    <color name="select_color">#6eb756</color>
+    <color name="normal_color">#ffffffff</color>
+    <color name="default_bg">#aa000000</color>
+    <color name="typeselect_top_bg">#F2F2F2</color>
+
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
+
+    <color name="blue_pressed">#ff0099cc</color>
+    <color name="blue_dark">#1DA6C2</color>
+    <color name="blue_normal">#ff33b5e5</color>
+    <color name="green_complete">#ff99cc00</color>
+    <color name="purple_progress">#ffaa66cc</color>
+    <color name="red_error">#ffff4444</color>
+
+    <color name="holo_blue_bright">#ff00ddff</color>
+    <color name="holo_green_light">#ff99cc00</color>
+    <color name="holo_orange_light">#ffffbb33</color>
+    <color name="holo_red_light">#ffff4444</color>
+    <color name="side_bar_bg">#50999999</color>
+    <color name="transparent">#00000000</color>
+    <color name="study_video_play_blue">#FF77BFFF</color>
+    <color name="font_study_dark">#FF222222</color>
+    <color name="font_study_introduce">#FFB0B0B0</color>
+    <color name="qr_code_theme">#FF434343</color>
+    <color name="font_order_count">#FF444444</color>
+    <color name="font_edit_text_hint">#FFBABABA</color>
+    <color name="font_text_order_title">#FF555555</color>
+    <color name="font_text_code">#FFA1A1A1</color>
+    <color name="transparent_white">#8AFFFFFF</color>
+    <color name="font_msg_date">#CCCCCC</color>
+    <color name="green_enable">#9957BF64</color>
+    <color name="font_white_enable">#99FFFFFF</color>
+    <color name="bg_order_list_item">#FFFAFAFA</color>
+    <color name="bg_indicator">#B3FFFFFF</color>
+    <color name="bg_video_type_unsel">#FFF5F5F5</color>
+    <color name="bg_can_order">#FFFFBA26</color>
+    <color name="bg_can_not_order">#FFAAAAAA</color>
+    <color name="line_hotel_check_in">#FFE1E1E1</color>
+
+    <color name="normal_day">#ff999999</color>
+    <color name="selected_day_background">#E75F49</color>
+    <color name="selected_day_text">#fff2f2f2</color>
+    <color name="to_day">#3ec599</color>
+    <color name="month_num_line">#f4f4f4</color>
+</resources>

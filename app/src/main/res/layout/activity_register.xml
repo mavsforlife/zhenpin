@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.register.RegisterActivity">
+
+    <include layout="@layout/layout_toolbar"/>
+
+    <LinearLayout
+        android:id="@+id/ll_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/super_toolbar"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:padding="@dimen/dp_10">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"/>
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:background="@null"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_05"
+        android:layout_below="@+id/ll_name"
+        android:background="@color/line"/>
+
+    <LinearLayout
+        android:id="@+id/ll_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider_name"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:padding="@dimen/dp_10">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mobile"/>
+
+        <EditText
+            android:id="@+id/et_mobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:background="@null"
+            android:inputType="phone"
+            android:singleLine="true"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_05"
+        android:layout_below="@+id/ll_mobile"
+        android:background="@color/line"/>
+
+    <LinearLayout
+        android:id="@+id/ll_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider_mobile"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:padding="@dimen/dp_10">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email"/>
+
+        <EditText
+            android:id="@+id/et_mail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:background="@null"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_email"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_05"
+        android:layout_below="@+id/ll_email"
+        android:background="@color/line"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_05"
+        android:background="@color/line"
+        android:layout_above="@id/ll_submit"/>
+
+    <LinearLayout
+        android:id="@+id/ll_submit"
+        style="@style/linear_layout_ripple"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_gravity="center"
+            android:text="@string/submit"
+            android:textSize="@dimen/sp_16"
+            android:duplicateParentState="true"
+            android:textColor="@drawable/selector_text_color"/>
+    </LinearLayout>
+</RelativeLayout>

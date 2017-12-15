@@ -1,0 +1,58 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.cang.zhenpin.zhenpincang"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 100
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    implementation 'com.android.support:support-v4:26.1.0'
+    api 'com.android.support:appcompat-v7:26.1.0'
+    api 'com.android.support:design:26.1.0'
+    api 'com.android.support.constraint:constraint-layout:1.0.2'
+    api 'com.github.bumptech.glide:glide:4.3.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.3.1'
+    api 'com.squareup.retrofit2:retrofit:2.3.0'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    api 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    api 'com.squareup.retrofit2:converter-gson:2.3.0'
+    api 'com.squareup.retrofit2:retrofit:2.3.0'
+    api 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    api 'com.google.code.gson:gson:2.8.0'
+    //RxJava的依赖包（我使用的最新版本）
+    api 'io.reactivex.rxjava2:rxjava:2.0.7'
+    //RxAndroid的依赖包
+    api 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    api 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    api 'org.greenrobot:eventbus:3.1.1'
+    //微信
+    api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    api 'com.yanzhenjie:permission:1.1.2'
+    testApi 'junit:junit:4.12'
+    api project(':loadinglayout')
+}
