@@ -56,6 +56,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView mTvBar = findViewById(R.id.tv_bar);
+        mTvBar.setText(R.string.apply_to_agent);
         EditText etName = findViewById(R.id.et_name);
         etName.addTextChangedListener(mNameWatcher);
         EditText etMobile = findViewById(R.id.et_mobile);
