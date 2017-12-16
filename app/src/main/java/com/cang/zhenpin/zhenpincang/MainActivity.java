@@ -2,6 +2,7 @@ package com.cang.zhenpin.zhenpincang;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Fragment mFragment;
 
     private UserPreferences mUserPreferences;
+    private long mPressTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -208,5 +210,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void getUpdateInfo() {
         UpdateHelper updateHelper = new UpdateHelper(this);
         updateHelper.getUpdateInfo(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if ((SystemClock.elapsedRealtime() - mPressTime) > 2000L) {
+            ToastUtil.showShort(this, R.string.next_press_quit);
+            mPressTime = SystemClock.elapsedRealtime();
+            return;
+        }
+        super.onBackPressed();
     }
 }

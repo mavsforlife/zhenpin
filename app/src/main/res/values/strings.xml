@@ -68,4 +68,5 @@
     <string name="download_fail">下载失败.</string>
     <string name="search_keyword">搜索关键字</string>
     <string name="search_empty_hint">很抱歉，根据您的关键字，没有搜索到神马</string>
+    <string name="next_press_quit">再按一次退出</string>
 </resources>
