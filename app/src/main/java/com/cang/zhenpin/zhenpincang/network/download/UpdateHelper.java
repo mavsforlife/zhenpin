@@ -86,6 +86,10 @@ public class UpdateHelper {
             } else {
                 showUpdateDialog();
             }
+        } else {
+            if (!isAuto) {
+                ToastUtil.showShort(mContext, R.string.already_update_version);
+            }
         }
     }
 
@@ -190,7 +194,7 @@ public class UpdateHelper {
     static class MyHandler extends Handler {
         private final WeakReference<ProgressDialog> ref;
 
-        public MyHandler(ProgressDialog dialog) {
+        MyHandler(ProgressDialog dialog) {
             ref = new WeakReference<>(dialog);
         }
 
@@ -207,7 +211,7 @@ public class UpdateHelper {
                         FileUtil.getFormatSize(download.getTotalFileSize())));
                 dialog.setProgress(download.getProgress());
                 if (download.getProgress() == 100) {
-                    dialog.setMessage("下载完成！");
+                    dialog.setMessage(dialog.getContext().getString(R.string.download_complete));
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.cang.zhenpin.zhenpincang.ui.login;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,8 +17,11 @@ import com.cang.zhenpin.zhenpincang.model.UserInfo;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.ui.register.RegisterActivity;
 import com.cang.zhenpin.zhenpincang.util.ToastUtil;
+import com.yanzhenjie.alertdialog.AlertDialog;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RationaleListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -50,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                     .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     .requestCode(100)
                     .callback(mPermissionListener)
+                    .rationale(mRationaleListener)
                     .start();
         }
     }
@@ -72,6 +77,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             }
         }
     };
+
+    private RationaleListener mRationaleListener = new RationaleListener() {
+        @Override
+        public void showRequestPermissionRationale(int requestCode, final Rationale rationale) {
+            AndPermission.rationaleDialog(LoginActivity.this, rationale).show();
+        }
+    };
+
     @Override
     public void showTip(String tip) {
         ToastUtil.showShort(this, tip);
