@@ -15,6 +15,7 @@ import com.cang.zhenpin.zhenpincang.event.RefreshLoginEvent;
 import com.cang.zhenpin.zhenpincang.glide.GlideApp;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.pref.UserPreferences;
+import com.cang.zhenpin.zhenpincang.util.DeviceUtil;
 import com.cang.zhenpin.zhenpincang.util.FileUtil;
 import com.cang.zhenpin.zhenpincang.util.ToastUtil;
 
@@ -38,7 +39,7 @@ public class UserFragment extends Fragment implements UserContract.View, View.On
     private ImageView mIvAvatar;
     private TextView mTvNick, mTvPhone, mTvId;
     private LinearLayout mLlApply, mLlStatus, mLlContact, mLlCheck, mLlClear, mLlLogOut;
-    private TextView mTvStatus, mTvFileSize;
+    private TextView mTvStatus, mTvFileSize, mTvVersion;
 
     private UserPreferences mUserPreferences;
     private UserPresenter mPresenter;
@@ -105,6 +106,7 @@ public class UserFragment extends Fragment implements UserContract.View, View.On
         mLlContact.setOnClickListener(this);
         mLlCheck = v.findViewById(R.id.ll_check_update);
         mLlCheck.setOnClickListener(this);
+        mTvVersion = v.findViewById(R.id.tv_version);
         mLlClear = v.findViewById(R.id.ll_clear_cache);
         mLlClear.setOnClickListener(this);
         mTvFileSize = v.findViewById(R.id.tv_file_size);
@@ -170,6 +172,8 @@ public class UserFragment extends Fragment implements UserContract.View, View.On
         mTvNick.setText(String.format(Locale.getDefault(), getString(R.string.user_nick), mUserPreferences.getUserId()));
         mTvId.setText(String.format(Locale.getDefault(), getString(R.string.user_id), String.valueOf(mUserPreferences.getId())));
         mTvPhone.setText(String.format(Locale.getDefault(), getString(R.string.user_phone), mUserPreferences.getUserPhone()));
+
+        mTvVersion.setText(String.format(Locale.getDefault(), getString(R.string.current_version), DeviceUtil.getVersionName()));
     }
 
     @Subscribe
