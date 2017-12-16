@@ -24,6 +24,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.cang.zhenpin.zhenpincang.util.DownLoadImageUtil.IMAGE_PATH;
+
 /**
  * Created by victor on 2017/11/28.
  * Email: wwmdirk@gmail.com
@@ -239,7 +241,7 @@ public class GoodsListPresenter implements GoodsListContract.Presenter {
         final String fileName = "compose_" + brand.getId() + ".jpg";
         if (DownLoadImageUtil.checkFileExist(mContext, fileName)) {
             mFiles.clear();
-            mFiles.add(new File(mContext.getExternalCacheDir() + DownLoadImageUtil.IMAGE_PATH + fileName));
+            mFiles.add(new File(mContext.getExternalCacheDir() + IMAGE_PATH + fileName));
             mView.shareTo(mFiles, brand.getDesc());
             return;
         }

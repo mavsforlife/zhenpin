@@ -50,13 +50,13 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     private LinearLayout mLlAll;
     private ImageView mIv1, mIv2, mIv3, mIv4;
     private TextView mTv1;
+    private LinearLayout mProgress;
 
     private boolean mHasMoreData = true; //是否加载更多数据
     private boolean mIsLoading;         //是否在加载中
     private Intent mShareIntent;
     private int mScreenWidth;
     private int mPos;
-    private ProgressDialog mProgressDialog;
     private String mKeyword;
 
     @Override
@@ -99,6 +99,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         mIv4 = findViewById(R.id.iv4);
         mTv1 = findViewById(R.id.tv1);
         mLlAll = findViewById(R.id.ll_all);
+        mProgress = findViewById(R.id.ll_progress);
     }
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
@@ -230,16 +231,11 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     }
 
     private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = DialogUtil.getProgressDialog(this);
-        }
-        mProgressDialog.show();
+        mProgress.setVisibility(View.VISIBLE);
     }
 
     private void dismissProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
+        mProgress.setVisibility(View.GONE);
     }
     @Override
     public void setUpShotView(final List<String> list, final List<Integer> params, final String desc, final String fileName) {

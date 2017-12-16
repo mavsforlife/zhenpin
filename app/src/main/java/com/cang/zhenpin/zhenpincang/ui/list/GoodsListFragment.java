@@ -61,6 +61,7 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
     private LinearLayout mLlAll;
     private ImageView mIv1, mIv2, mIv3, mIv4;
     private TextView mTv1;
+    private LinearLayout mProgress;
 
     private static final String BRAND_ID = "param1";
     private static final String IS_ATTENTIION = "is_attention";
@@ -72,7 +73,6 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
     private boolean mIsLoading;         //是否在加载中
     private Intent mShareIntent;
     private int mPos;
-    private ProgressDialog mProgressDialog;
 
     public GoodsListFragment() {
         // Required empty public constructor
@@ -145,6 +145,7 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
         mIv4 = v.findViewById(R.id.iv4);
         mTv1 = v.findViewById(R.id.tv1);
         mLlAll = v.findViewById(R.id.ll_all);
+        mProgress = v.findViewById(R.id.ll_progress);
     }
 
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
@@ -375,16 +376,11 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
     }
 
     private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = DialogUtil.getProgressDialog(getActivity());
-        }
-        mProgressDialog.show();
+        mProgress.setVisibility(View.VISIBLE);
     }
 
     private void dismissProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
+        mProgress.setVisibility(View.GONE);
     }
 
     @Override

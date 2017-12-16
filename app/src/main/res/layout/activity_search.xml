@@ -73,4 +73,5 @@
         </com.victor.loadinglayout.LoadingLayout>
     </LinearLayout>
 
+    <include layout="@layout/layout_loading_prepare_pic"/>
 </FrameLayout>
