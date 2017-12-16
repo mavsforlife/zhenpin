@@ -122,6 +122,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 case R.id.rb_user:
                     position = 2;
+                    Fragment fragment = mFragments.get(2);
+                    if (fragment != null && fragment instanceof UserFragment) {
+                        UserFragment userFragment = (UserFragment) fragment;
+                        userFragment.setFileSize();
+                    }
                     setTitle(R.string.mine);
                     break;
 

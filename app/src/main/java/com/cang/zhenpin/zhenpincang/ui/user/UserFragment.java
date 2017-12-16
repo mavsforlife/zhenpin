@@ -42,6 +42,7 @@ public class UserFragment extends Fragment implements UserContract.View, View.On
 
     private UserPreferences mUserPreferences;
     private UserPresenter mPresenter;
+
     public UserFragment() {
         // Required empty public constructor
     }
@@ -150,7 +151,9 @@ public class UserFragment extends Fragment implements UserContract.View, View.On
 
     @Override
     public void setFileSize() {
-        mTvFileSize.setText(FileUtil.getFormatSize(FileUtil.getFolderSize(getActivity().getExternalCacheDir())));
+        if (mTvFileSize != null) {
+            mTvFileSize.setText(FileUtil.getFormatSize(FileUtil.getFolderSize(getActivity().getExternalCacheDir())));
+        }
     }
 
     @Override
