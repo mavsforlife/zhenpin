@@ -112,15 +112,7 @@ public class UserFragment extends Fragment implements UserContract.View, View.On
     }
 
     private void initData() {
-        GlideApp.with(getActivity())
-                .load(mUserPreferences.getHeadImgUrl())
-                .error(R.color.gray)
-                .placeholder(R.color.gray)
-                .into(mIvAvatar);
-        mTvNick.setText(String.format(Locale.getDefault(), getString(R.string.user_nick), mUserPreferences.getUserId()));
-        mTvId.setText(String.format(Locale.getDefault(), getString(R.string.user_id), String.valueOf(mUserPreferences.getId())));
-        mTvPhone.setText(String.format(Locale.getDefault(), getString(R.string.user_phone), mUserPreferences.getUserPhone()));
-
+        setUserInfo();
         setFileSize();
         setUserType();
     }
@@ -166,9 +158,21 @@ public class UserFragment extends Fragment implements UserContract.View, View.On
         mTvStatus.setText(mUserPreferences.getUserTypeStr());
     }
 
+    private void setUserInfo() {
+        GlideApp.with(getActivity())
+                .load(mUserPreferences.getHeadImgUrl())
+                .error(R.color.gray)
+                .placeholder(R.color.gray)
+                .into(mIvAvatar);
+        mTvNick.setText(String.format(Locale.getDefault(), getString(R.string.user_nick), mUserPreferences.getUserId()));
+        mTvId.setText(String.format(Locale.getDefault(), getString(R.string.user_id), String.valueOf(mUserPreferences.getId())));
+        mTvPhone.setText(String.format(Locale.getDefault(), getString(R.string.user_phone), mUserPreferences.getUserPhone()));
+    }
+
     @Subscribe
     public void onRefreshUserType(RefreshLoginEvent event) {
         setUserType();
+        setUserInfo();
     }
 
     @Override

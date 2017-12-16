@@ -13,6 +13,8 @@ import android.view.Display;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 
+import com.cang.zhenpin.zhenpincang.BuildConfig;
+
 import java.lang.reflect.Method;
 
 /**
@@ -164,32 +166,14 @@ public class DeviceUtil {
     /**
      * 返回版本号
      * 对应build.gradle中的versionCode
-     *
-     * @param context
      * @return 返回版本号
      */
-    public static String getVersionCode(Context context) {
-        String versionCode = "";
-        try {
-            PackageManager packageManager = context.getPackageManager();
-            PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
-            versionCode = String.valueOf(packInfo.versionCode);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return versionCode;
+    public static String getVersionCode() {
+        return String.valueOf(BuildConfig.VERSION_CODE);
     }
 
-    public static String getVersionName(Context context) {
-        String versionName = "";
-        try {
-            PackageManager packageManager = context.getPackageManager();
-            PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
-            versionName = packageInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return versionName;
+    public static String getVersionName() {
+        return BuildConfig.VERSION_NAME;
     }
 
     /**

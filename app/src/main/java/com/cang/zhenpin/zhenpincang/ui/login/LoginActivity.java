@@ -86,9 +86,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     public void weChatLogin() {
         if (BuildConfig.DEBUG) {
             UserInfo userInfo = PostFactory.fake();
-            Log.d("loginActivity", userInfo.toString());
             PreferencesFactory.getUserPref().saveUserInfo(userInfo);
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(MainActivity.createIntent(this));
         }
         finish();
         overridePendingTransition(0, 0);

@@ -32,6 +32,7 @@ public interface BaseApi {
     String ID = "ID";
     String CONCERN = "concern";
     String CONCERN_CANCEL = "concerncancel";
+    String OS = "os";
 
     @GET("index/brandlist")
     Observable<BaseResult<BrandList>> brandList(@Query(PAGE) int page,
@@ -67,5 +68,5 @@ public interface BaseApi {
                                      @Query(ID) String id);
 
     @GET("index/appversion")
-    Observable<BaseResult<AppInfoModel>> getUpdateInfo();
+    Observable<BaseResult<AppInfoModel>> getUpdateInfo(@Query(OS) int os);
 }

@@ -18,11 +18,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.cang.zhenpin.zhenpincang.event.RefreshLoginEvent;
 import com.cang.zhenpin.zhenpincang.model.BaseResult;
 import com.cang.zhenpin.zhenpincang.model.UserInfo;
 import com.cang.zhenpin.zhenpincang.network.BaseActivityObserver;
 import com.cang.zhenpin.zhenpincang.network.BaseObserver;
 import com.cang.zhenpin.zhenpincang.network.NetWork;
+import com.cang.zhenpin.zhenpincang.network.download.UpdateHelper;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.pref.UserPreferences;
 import com.cang.zhenpin.zhenpincang.ui.about.AboutUsFragment;
@@ -31,6 +33,8 @@ import com.cang.zhenpin.zhenpincang.ui.login.LoginActivity;
 import com.cang.zhenpin.zhenpincang.ui.search.SearchActivity;
 import com.cang.zhenpin.zhenpincang.ui.user.UserFragment;
 import com.cang.zhenpin.zhenpincang.util.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         initData();
         ensureUserInfo();
+        getUpdateInfo();
     }
 
     private void initView() {
@@ -187,7 +192,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         UserInfo info = userInfoBaseResult.getData();
                         if (null != info) {
                             mUserPreferences.saveUserInfo(userInfoBaseResult.getData());
-                            if (userType == info.getMUserType()) return;
+                            EventBus.getDefault().post(new RefreshLoginEvent());
+                            if (userType == UserPreferences.DEFAULT_ERROR || userType == info.getMUserType()) return;
                             if (info.getMUserType() == UserInfo.TYPE_AGENT_INT) {
                                 ToastUtil.showShort(MainActivity.this, R.string.congratulate_to_apply_success);
                             } else if (info.getMUserType() == UserInfo.TYPE_REJECT_INT) {
@@ -197,5 +203,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     }
                 });
+    }
+
+    private void getUpdateInfo() {
+        UpdateHelper updateHelper = new UpdateHelper(this);
+        updateHelper.getUpdateInfo(true);
     }
 }

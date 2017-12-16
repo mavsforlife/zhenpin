@@ -2,6 +2,7 @@ package com.cang.zhenpin.zhenpincang.pref;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.SystemClock;
 
 import com.cang.zhenpin.zhenpincang.base.App;
 
@@ -14,8 +15,8 @@ public class UpdatePreferences extends BasePreferences {
 
     private static final String UPDATE_PREF = "updatePref";
 
-    public static final long CHECK_VALID_TIME = 24 * 60 * 60 * 1000L;
 //    public static final long CHECK_VALID_TIME = 60 * 60 * 1000L;
+    public static final long CHECK_VALID_TIME = 60 * 1000L;
 
     public static final String LAST_CHECK_TIME = "lastCheck";
 
@@ -30,5 +31,9 @@ public class UpdatePreferences extends BasePreferences {
 
     public long getLastCheck() {
         return getLong(LAST_CHECK_TIME, 0L);
+    }
+
+    public boolean needShowDialog() {
+        return SystemClock.elapsedRealtime() - getLastCheck() > CHECK_VALID_TIME;
     }
 }

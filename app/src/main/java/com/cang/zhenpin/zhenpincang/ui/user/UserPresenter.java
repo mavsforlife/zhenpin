@@ -76,7 +76,7 @@ public class UserPresenter implements UserContract.Presenter {
     @Override
     public void checkUpdate() {
         UpdateHelper helper = new UpdateHelper(mContext);
-        helper.getUpdateInfo();
+        helper.getUpdateInfo(false);
     }
 
     @Override

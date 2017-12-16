@@ -5,7 +5,7 @@
     <string name="home_page">首页</string>
     <string name="test_title">测试标题测试标题测试标题</string>
     <string name="test_content">测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容</string>
-    <string name="no_more">没有更多了...</string>
+    <string name="no_more">没有更多了&#8230;</string>
     <string name="friend_circle">朋友圈</string>
     <string name="test_source">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</string>
     <string name="expand">展开</string>
@@ -48,6 +48,7 @@
     <string name="clear_cache">清除缓存</string>
     <string name="log_out">退出登录</string>
     <string name="sure">确定</string>
+    <string name="update_right_now">立即更新</string>
     <string name="ensure">确认无误</string>
     <string name="cancel_ensure">修改一下</string>
     <string name="ensure_user_info">姓名：%s\n手机：%s\n邮箱：%s</string>
@@ -60,8 +61,11 @@
     <string name="login_fail">登录失败！</string>
     <string name="congratulate_to_apply_success">恭喜您申请成功，您现在的身份升级为代理用户！</string>
     <string name="apply_reject_and_contact_us">您的申请被拒绝了，请联系我们重新申请成为代理用户</string>
-    <string name="good_describe_already_copied">商品描述已复制</string><string name="can_paste_on_we_chat_and_qq">x</string>
+    <string name="good_describe_already_copied">商品描述已复制</string>
+    <string name="can_paste_on_we_chat_and_qq">1.点击\'去分享\'后若无微信和QQ选项，可在\'更多\'中打开\n2.商品描述已复制，可以长按\'粘贴\'</string>
     <string name="downloading">下载中</string>
-    <string name="wait_for_download_complete">正在下载，请稍后...</string>
+    <string name="wait_for_download_complete">正在下载，请稍后&#8230;</string>
     <string name="download_fail">下载失败.</string>
+    <string name="search_keyword">搜索关键字</string>
+    <string name="search_empty_hint">很抱歉，根据您的关键字，没有搜索到神马</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.cang.zhenpin.zhenpincang.network.download;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,15 +9,19 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 
+import com.cang.zhenpin.zhenpincang.BuildConfig;
 import com.cang.zhenpin.zhenpincang.R;
 import com.cang.zhenpin.zhenpincang.model.AppInfoModel;
 import com.cang.zhenpin.zhenpincang.model.BaseResult;
 import com.cang.zhenpin.zhenpincang.network.BaseActivityObserver;
 import com.cang.zhenpin.zhenpincang.network.BaseActivitySlienceObserver;
 import com.cang.zhenpin.zhenpincang.network.NetWork;
+import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
+import com.cang.zhenpin.zhenpincang.pref.UpdatePreferences;
 import com.cang.zhenpin.zhenpincang.util.FileUtil;
 import com.cang.zhenpin.zhenpincang.util.ToastUtil;
 
@@ -44,34 +49,44 @@ public class UpdateHelper {
     private String mUpdateMsg;
     private ProgressDialog mDialog;
     private MyHandler mHandler;
+    private UpdatePreferences mPreferences;
 
     public UpdateHelper(Context context) {
         mContext = context;
+        mPreferences = PreferencesFactory.getUpdatePref();
     }
 
 
-    public void getUpdateInfo() {
+    public void getUpdateInfo(final boolean isAuto) {
         NetWork.getsBaseApi()
-                .getUpdateInfo()
-                .observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
+                .getUpdateInfo(1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseActivitySlienceObserver<BaseResult<AppInfoModel>>(mContext) {
                     @Override
                     public void onNext(BaseResult<AppInfoModel> appInfoModelBaseResult) {
                         super.onNext(appInfoModelBaseResult);
                         AppInfoModel info = appInfoModelBaseResult.getData();
                         if (info != null) {
-                            checkUpdate(info);
+                            checkUpdate(info, isAuto);
                         }
                     }
                 });
     }
 
-    private void checkUpdate(AppInfoModel info) {
+    private void checkUpdate(AppInfoModel info, boolean isAuto) {
         mUrl = info.getUpdateUrl();
         mIsForce = info.getIsForce() != 0;
-        mUpdateMsg = "";
-        showUpdateDialog();
+        mUpdateMsg = info.getDesc();
+        if (BuildConfig.VERSION_CODE < info.getVerCode()) {
+            if (isAuto) {
+                if (mPreferences.needShowDialog() || mIsForce) {
+                    showUpdateDialog();
+                }
+            } else {
+                showUpdateDialog();
+            }
+        }
     }
 
     private void showUpdateDialog() {
@@ -79,12 +94,14 @@ public class UpdateHelper {
                 .setTitle("发现新版本")
                 .setMessage(mUpdateMsg)
                 .setCancelable(!mIsForce)
-                .setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.update_right_now, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         download();
                     }
-                });
+                })
+                .show();
+        mPreferences.setLastCheck(SystemClock.elapsedRealtime());
     }
     private void download() {
         showProgressDialog();
@@ -117,8 +134,8 @@ public class UpdateHelper {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        dismissDialog();
                         ToastUtil.showShort(mContext, R.string.download_fail);
+                        dismissDialog();
                     }
 
                     @Override
@@ -131,6 +148,7 @@ public class UpdateHelper {
     private void onDownloadComplete(File file) {
         installApk(file);
         dismissDialog();
+        finish();
     }
 
     private void showProgressDialog() {
@@ -146,12 +164,16 @@ public class UpdateHelper {
     }
 
     private void dismissDialog() {
-        if (mIsForce) return;
         if (mDialog != null) {
             mDialog.dismiss();
         }
     }
 
+    private void finish() {
+        if (mIsForce) {
+            ((Activity)mContext).finish();
+        }
+    }
     private void installApk(File file) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -1,10 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.cang.zhenpin.zhenpincang.ui.search.SearchActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <include layout="@layout/layout_screen_shot_view"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:background="@color/grayLighter"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_keyword"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="7dp"
+                android:layout_marginStart="@dimen/dp_10"
+                android:layout_marginTop="7dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_stroke_text_view"
+                android:drawablePadding="@dimen/dp_10"
+                android:drawableStart="@drawable/ic_search_small"
+                android:hint="@string/search_keyword"
+                android:imeOptions="actionSearch"
+                android:paddingEnd="@dimen/dp_05"
+                android:paddingStart="@dimen/dp_10"
+                android:singleLine="true"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingBottom="@dimen/dp_05"
+                android:paddingEnd="@dimen/dp_10"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_05"
+                android:text="@string/cancel"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:background="@color/line_dark"/>
+
+        <com.victor.loadinglayout.LoadingLayout
+            android:id="@id/loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:emptyView="@layout/layout_search_empty">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_goods"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"/>
+
+        </com.victor.loadinglayout.LoadingLayout>
+    </LinearLayout>
+
+</FrameLayout>

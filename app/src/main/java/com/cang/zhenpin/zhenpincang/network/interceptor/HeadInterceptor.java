@@ -23,8 +23,8 @@ public class HeadInterceptor implements Interceptor {
                 .addHeader("PHONE-BRAND", DeviceUtil.getPhoneBrand())
                 .addHeader("OS", "android")
                 .addHeader("OS-VERSION", DeviceUtil.getBuildVersion())
-                .addHeader("APP-VERSION-CODE", DeviceUtil.getVersionCode(App.getsInstance()))
-                .addHeader("APP-VERSION", DeviceUtil.getVersionName(App.getsInstance()))
+                .addHeader("APP-VERSION-CODE", DeviceUtil.getVersionCode())
+                .addHeader("APP-VERSION", DeviceUtil.getVersionName())
                 .addHeader("Content-Type", "application/json")
                 .build());
     }

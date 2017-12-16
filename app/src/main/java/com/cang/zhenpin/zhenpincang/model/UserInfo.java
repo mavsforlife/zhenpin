@@ -11,12 +11,12 @@ import com.google.gson.annotations.SerializedName;
 @Keep
 public class UserInfo {
 
-    public static final String TYPE_NOMAL = "普通用户";
+    public static final String TYPE_NORMAL = "注册用户";
     public static final String TYPE_AGENT = "代理用户";
     public static final String TYPE_APPLY_ING = "申请中";
     public static final String TYPE_REJECT = "审核不通过";
 
-    public static final int TYPE_NOMA_INTL = 1;
+    public static final int TYPE_NORMAL_INT = 1;
     public static final int TYPE_AGENT_INT = 2;
     public static final int TYPE_APPLY_ING_INT = 3;
     public static final int TYPE_REJECT_INT = 4;
@@ -79,6 +79,8 @@ public class UserInfo {
     private String mWeixinName;
     @SerializedName("UserCode")
     private String mUserCode;
+    @SerializedName("UsertypeName")
+    private String mUserTpyeStr;
 
     public int getMId() {
         return mId;
@@ -232,28 +234,11 @@ public class UserInfo {
         this.mUserCode = mUserCode;
     }
 
-    @Override
-    public String toString() {
-        return "UserInfo{" +
-                "mId=" + mId +
-                ", mOpenId='" + mOpenId + '\'' +
-                ", mUserId='" + mUserId + '\'' +
-                ", mPassword='" + mPassword + '\'' +
-                ", Token='" + Token + '\'' +
-                ", mHeadImgUrl='" + mHeadImgUrl + '\'' +
-                ", mPrincipal='" + mPrincipal + '\'' +
-                ", mSex=" + mSex +
-                ", mEmail='" + mEmail + '\'' +
-                ", mMobile='" + mMobile + '\'' +
-                ", mRemark='" + mRemark + '\'' +
-                ", mRegistTime='" + mRegistTime + '\'' +
-                ", mIsDelete='" + mIsDelete + '\'' +
-                ", mIsAdmin='" + mIsAdmin + '\'' +
-                ", mUserType=" + mUserType +
-                ", mAppDate='" + mAppDate + '\'' +
-                ", mCheckDate='" + mCheckDate + '\'' +
-                ", mWeixinName='" + mWeixinName + '\'' +
-                ", mUserCode='" + mUserCode + '\'' +
-                '}';
+    public String getUserTpyeStr() {
+        return mUserTpyeStr;
+    }
+
+    public void setUserTpyeStr(String userTpyeStr) {
+        mUserTpyeStr = userTpyeStr;
     }
 }

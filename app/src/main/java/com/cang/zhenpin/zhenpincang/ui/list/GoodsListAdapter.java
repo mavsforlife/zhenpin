@@ -35,7 +35,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private boolean mHasMoreData = true;
     private boolean mIsAttention;
 
-    GoodsListAdapter(Context context, ShareListener listener, boolean isAttention) {
+    public GoodsListAdapter(Context context, ShareListener listener, boolean isAttention) {
         mContext = context;
         mListener = listener;
         mList = new ArrayList<>();
@@ -47,12 +47,12 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return mIsAttention;
     }
 
-    void clear() {
+    public void clear() {
         mList.clear();
         notifyDataSetChanged();
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return mList == null || mList.size() == 0;
     }
 
@@ -62,7 +62,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
-    void addData(List<Brand> list) {
+    public void addData(List<Brand> list) {
         if (list == null) return;
         int lastPos = mList.size();
         mList.addAll(list);
@@ -171,7 +171,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    void setHasMoreData(boolean hasMoreData) {
+    public void setHasMoreData(boolean hasMoreData) {
         mHasMoreData = hasMoreData;
         if (mFooterHolder != null) {
             mFooterHolder.mTvNoMore.setVisibility(hasMoreData ? View.GONE : View.VISIBLE);
@@ -180,7 +180,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    void showFooterError() {
+    public void showFooterError() {
         if (mFooterHolder != null) {
             mFooterHolder.mTvNoMore.setVisibility(View.GONE);
             mFooterHolder.mProgressBar.setVisibility(View.GONE);
@@ -231,7 +231,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    interface ShareListener {
+    public interface ShareListener {
 
         void onShare(int position);
 

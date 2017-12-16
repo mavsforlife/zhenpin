@@ -10,14 +10,25 @@
 
     <include layout="@layout/layout_toolbar"/>
 
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:layout_above="@+id/tv_we_chat"
+        android:layout_centerHorizontal="true"/>
     <TextView
         android:id="@+id/tv_we_chat"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_40"
         android:layout_centerInParent="true"
+        android:gravity="center"
         android:text="@string/we_chat_login"
-        android:padding="@dimen/dp_10"
-        android:drawableTop="@color/colorPrimaryDark"/>
+        android:textColor="@drawable/selector_tab_text"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:background="@drawable/bg_press_item"
+        android:padding="@dimen/dp_10"/>
 
 </RelativeLayout>

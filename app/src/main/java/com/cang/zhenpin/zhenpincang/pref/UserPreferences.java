@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import com.cang.zhenpin.zhenpincang.base.App;
 import com.cang.zhenpin.zhenpincang.model.UserInfo;
 import com.cang.zhenpin.zhenpincang.model.WxUserInfo;
-import com.cang.zhenpin.zhenpincang.ui.user.UserContract;
 
 /**
  * Created by victor on 2016/8/16.
@@ -20,6 +19,8 @@ public class UserPreferences extends BasePreferences {
     private static final String DEFAULT_NULL = "";
 
     private static final int DEFAULT_ZERO = 0;
+
+    public static final int DEFAULT_ERROR = -1;
 
     private static final String TOKEN = "token";
 
@@ -41,6 +42,8 @@ public class UserPreferences extends BasePreferences {
 
     private static final String USER_CODE = "user_code";
 
+    private static final String USER_TYPE_NAME = "user_type_name";
+
     @Override
     public SharedPreferences getSharePreferences() {
         return App.getsInstance().getSharedPreferences(USER_INFO_PREFS, Context.MODE_PRIVATE);
@@ -59,6 +62,7 @@ public class UserPreferences extends BasePreferences {
         putInt(USER_TYPE, info.getMUserType());
         putString(USER_EMAIL, info.getMEmail());
         putString(USER_CODE, info.getMUserCode());
+        putString(USER_TYPE_NAME, info.getUserTpyeStr());
     }
 
     public void saveWxInfo(WxUserInfo info) {
@@ -105,21 +109,10 @@ public class UserPreferences extends BasePreferences {
     }
 
     public int getUserType() {
-        return getInt(USER_TYPE, DEFAULT_ZERO);
+        return getInt(USER_TYPE, DEFAULT_ERROR);
     }
 
     public String getUserTypeStr() {
-        switch (getInt(USER_TYPE, DEFAULT_ZERO)) {
-            case UserInfo.TYPE_NOMA_INTL:
-                return UserInfo.TYPE_NOMAL;
-            case UserInfo.TYPE_AGENT_INT:
-                return UserInfo.TYPE_AGENT;
-            case UserInfo.TYPE_APPLY_ING_INT:
-                return UserInfo.TYPE_APPLY_ING;
-            case UserInfo.TYPE_REJECT_INT:
-                return UserInfo.TYPE_REJECT;
-            default:
-                return UserInfo.TYPE_NOMAL;
-        }
+        return getString(USER_TYPE_NAME, UserInfo.TYPE_NORMAL);
     }
 }
