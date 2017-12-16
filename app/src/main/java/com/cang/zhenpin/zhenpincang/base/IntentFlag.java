@@ -14,5 +14,9 @@ public class IntentFlag {
     public static final String IMAGE_POSITION = "image_position";
     public static final int IMAGE_DEFAULT_POSITION = 0;
 
+    public static final String BRAND_NAME = "brand_name";
+
+    public static final String BRAND_ID = "brand_id";
+
 
 }

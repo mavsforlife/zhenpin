@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
 
 import com.cang.zhenpin.zhenpincang.R;
 import com.cang.zhenpin.zhenpincang.base.IntentFlag;
+import com.cang.zhenpin.zhenpincang.model.UserInfo;
+import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -59,5 +62,7 @@ public class ShareUtil {
         return intent;
     }
 
-
+    public static boolean isShareEnabled() {
+        return PreferencesFactory.getUserPref().getUserType() == UserInfo.TYPE_AGENT_INT;
+    }
 }

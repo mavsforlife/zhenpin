@@ -40,7 +40,7 @@
             android:drawableTop="@drawable/selector_home_tab"
             android:gravity="center"
             android:text="@string/main"
-            android:textColor="@drawable/selector_tab_text"/>
+            android:textColor="@drawable/selector_tab_str"/>
 
         <RadioButton
             android:id="@+id/rb_atten"
@@ -53,7 +53,7 @@
             android:drawableTop="@drawable/selector_atten_tab"
             android:gravity="center"
             android:text="@string/attention"
-            android:textColor="@drawable/selector_tab_text"/>
+            android:textColor="@drawable/selector_tab_str"/>
 
         <RadioButton
             android:id="@+id/rb_user"
@@ -66,7 +66,7 @@
             android:drawableTop="@drawable/selector_user_tab"
             android:gravity="center"
             android:text="@string/mine"
-            android:textColor="@drawable/selector_tab_text"/>
+            android:textColor="@drawable/selector_tab_str"/>
 
         <RadioButton
             android:id="@+id/rb_about"
@@ -79,7 +79,7 @@
             android:drawableTop="@drawable/selector_about_tab"
             android:gravity="center"
             android:text="@string/about"
-            android:textColor="@drawable/selector_tab_text"/>
+            android:textColor="@drawable/selector_tab_str"/>
     </RadioGroup>
 
 </LinearLayout>

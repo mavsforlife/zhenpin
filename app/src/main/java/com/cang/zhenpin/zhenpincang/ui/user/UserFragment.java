@@ -170,7 +170,8 @@ public class UserFragment extends Fragment implements UserContract.View, View.On
                 .placeholder(R.color.gray)
                 .into(mIvAvatar);
         mTvNick.setText(String.format(Locale.getDefault(), getString(R.string.user_nick), mUserPreferences.getUserId()));
-        mTvId.setText(String.format(Locale.getDefault(), getString(R.string.user_id), String.valueOf(mUserPreferences.getId())));
+        String userid = String.format(Locale.getDefault(), "%06d", mUserPreferences.getId());
+        mTvId.setText(String.format(Locale.getDefault(), getString(R.string.user_id), userid));
         mTvPhone.setText(String.format(Locale.getDefault(), getString(R.string.user_phone), mUserPreferences.getUserPhone()));
 
         mTvVersion.setText(String.format(Locale.getDefault(), getString(R.string.current_version), DeviceUtil.getVersionName()));

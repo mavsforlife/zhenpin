@@ -1,6 +1,5 @@
 package com.cang.zhenpin.zhenpincang.ui.search;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +21,7 @@ import com.cang.zhenpin.zhenpincang.R;
 import com.cang.zhenpin.zhenpincang.glide.GlideApp;
 import com.cang.zhenpin.zhenpincang.model.Brand;
 import com.cang.zhenpin.zhenpincang.ui.list.GoodsListAdapter;
+import com.cang.zhenpin.zhenpincang.ui.register.RegisterActivity;
 import com.cang.zhenpin.zhenpincang.util.DeviceUtil;
 import com.cang.zhenpin.zhenpincang.util.DialogUtil;
 import com.cang.zhenpin.zhenpincang.util.ShareUtil;
@@ -86,7 +86,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                 LinearLayoutManager.VERTICAL, DeviceUtil.dip2px(this,
                 0.5f)));
         mRv.addOnScrollListener(mOnScrollListener);
-        mAdapter = new GoodsListAdapter(this, this, false);
+        mAdapter = new GoodsListAdapter(this, this, false, false);
         mRv.setAdapter(mAdapter);
         mPresenter = new SearchPresenter(this, this);
         mScreenWidth = DeviceUtil.getScreenWidthPixel(SearchActivity.this);
@@ -322,10 +322,34 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                 .create()
                 .show();
     }
+
     @Override
     public void onShare(int position) {
+        if (!ShareUtil.isShareEnabled()){
+            showShareTip();
+            return;
+        }
         showShareDialog();
         mPos = position;
+    }
+
+    private void showShareTip() {
+        new AlertDialog.Builder(this)
+                .setMessage("只有代理用户才能分享")
+                .setPositiveButton("申请代理", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SearchActivity.this.startActivity(RegisterActivity.createIntent(SearchActivity.this));
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.cang.zhenpin.zhenpincang.R;
 import com.cang.zhenpin.zhenpincang.glide.GlideApp;
 import com.cang.zhenpin.zhenpincang.model.Brand;
+import com.cang.zhenpin.zhenpincang.ui.brand.BrandActivity;
 import com.cang.zhenpin.zhenpincang.widget.EllipsizingTextView;
 import com.cang.zhenpin.zhenpincang.widget.ninegridlayout.ImgGridView;
 
@@ -34,12 +35,14 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private FooterHolder mFooterHolder;
     private boolean mHasMoreData = true;
     private boolean mIsAttention;
+    private boolean mIsBrand;
 
-    public GoodsListAdapter(Context context, ShareListener listener, boolean isAttention) {
+    public GoodsListAdapter(Context context, ShareListener listener, boolean isAttention, boolean isBrand) {
         mContext = context;
         mListener = listener;
         mList = new ArrayList<>();
         mIsAttention = isAttention;
+        mIsBrand = isBrand;
         mLayoutInflater = LayoutInflater.from(mContext);
     }
 
@@ -136,9 +139,28 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
             GlideApp.with(mContext)
                     .load(brand.getBrandPic())
-                    .error(R.color.gray)
-                    .placeholder(R.color.gray)
+                    .centerCrop()
+                    .error(R.color.grayLighter)
+                    .placeholder(R.color.grayLighter)
                     .into(h.mIvAvatar);
+            if (!mIsBrand) {
+                h.mIvAvatar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mContext.startActivity(BrandActivity.createIntent(mContext,
+                                brand.getBrandName(),
+                                brand.getBrandId()));
+                    }
+                });
+                h.mTvTitle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mContext.startActivity(BrandActivity.createIntent(mContext,
+                                brand.getBrandName(),
+                                brand.getBrandId()));
+                    }
+                });
+            }
         }
     }
 

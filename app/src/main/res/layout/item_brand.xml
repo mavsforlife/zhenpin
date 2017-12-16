@@ -18,7 +18,9 @@
         android:layout_marginStart="@dimen/dp_10"
         android:layout_toEndOf="@+id/iv_avatar"
         android:text="@string/test_title"
-        android:textSize="@dimen/sp_15"/>
+        android:textSize="@dimen/sp_15"
+        android:textStyle="bold"
+        android:textColor="@color/color_brand_title"/>
 
     <ImageView
         android:id="@+id/iv_attention"
@@ -92,6 +94,7 @@
         android:layout_height="wrap_content"
         android:text="12/05 03:00"
         android:visibility="gone"/>
+
     <TextView
         android:id="@+id/share"
         android:layout_width="wrap_content"

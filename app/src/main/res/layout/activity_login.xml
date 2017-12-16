@@ -27,7 +27,7 @@
         android:text="@string/we_chat_login"
         android:textColor="@drawable/selector_tab_text"
         android:layout_marginStart="@dimen/dp_20"
-        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
         android:background="@drawable/bg_press_item"
         android:padding="@dimen/dp_10"/>
 

@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import com.cang.zhenpin.zhenpincang.R;
 import com.cang.zhenpin.zhenpincang.glide.GlideApp;
 import com.cang.zhenpin.zhenpincang.model.Brand;
+import com.cang.zhenpin.zhenpincang.ui.register.RegisterActivity;
 import com.cang.zhenpin.zhenpincang.util.DeviceUtil;
 import com.cang.zhenpin.zhenpincang.util.DialogUtil;
 import com.cang.zhenpin.zhenpincang.util.ShareUtil;
@@ -113,7 +115,7 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
                 LinearLayoutManager.VERTICAL, DeviceUtil.dip2px(getActivity(),
                 0.5f)));
         mRv.addOnScrollListener(mOnScrollListener);
-        mAdapter = new GoodsListAdapter(getActivity(), this, mIsAttention);
+        mAdapter = new GoodsListAdapter(getActivity(), this, mIsAttention, !TextUtils.isEmpty(mBrandId));
         mRv.setAdapter(mAdapter);
         mSrl = v.findViewById(R.id.swipe_refresh_layout);
         mSrl.setColorSchemeResources(R.color.colorPrimary);
@@ -219,7 +221,7 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
 
     @Override
     public void setNoticeText(String notice) {
-        if (TextUtils.isEmpty(notice)) {
+        if (TextUtils.isEmpty(notice) || !TextUtils.isEmpty(mBrandId)) {
             mAppBar.setVisibility(View.GONE);
         } else {
             mTvNotice.setText(String.format(Locale.getDefault(), getString(R.string.notice_content), notice));
@@ -361,8 +363,31 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
 
     @Override
     public void onShare(int position) {
+        if (!ShareUtil.isShareEnabled()) {
+            showShareTip();
+            return;
+        }
         showShareDialog();
         mPos = position;
+    }
+
+    private void showShareTip() {
+        new AlertDialog.Builder(getActivity())
+                .setMessage("只有代理用户才能分享")
+                .setPositiveButton("申请代理", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getActivity().startActivity(RegisterActivity.createIntent(getActivity()));
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     @Override

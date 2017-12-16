@@ -42,8 +42,8 @@ public class ImgGridView extends AbstractNineGridLayout<List<String>> {
             GlideApp.with(getContext())
                     .load(url)
                     .fitCenter()
-                    .placeholder(R.color.gray)
-                    .error(R.color.gray)
+                    .placeholder(R.color.grayLighter)
+                    .error(R.color.grayLighter)
                     .into(imageView);
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -57,8 +57,8 @@ public class ImgGridView extends AbstractNineGridLayout<List<String>> {
                 String url = data.get(i);
                 GlideApp.with(getContext())
                         .load(url)
-                        .placeholder(R.color.gray)
-                        .error(R.color.gray)
+                        .placeholder(R.color.grayLighter)
+                        .error(R.color.grayLighter)
                         .into(imageViews[i]);
                 ImageView imageView = imageViews[i];
                 final int finalI = i;
