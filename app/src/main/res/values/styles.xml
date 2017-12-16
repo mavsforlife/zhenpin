@@ -47,4 +47,8 @@
     <style name="linear_layout_text">
         <item name="android:textSize">@dimen/sp_15</item>
     </style>
+
+    <declare-styleable name="RoundCornerImageView">
+        <attr name="rect" format="dimension"/>
+    </declare-styleable>
 </resources>

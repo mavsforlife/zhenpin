@@ -19,7 +19,8 @@
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dp_20"/>
+            android:padding="@dimen/dp_20"
+            android:autoLink="email|phone"/>
 
     </com.victor.loadinglayout.LoadingLayout>
 
