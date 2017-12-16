@@ -15,8 +15,8 @@ public class UpdatePreferences extends BasePreferences {
 
     private static final String UPDATE_PREF = "updatePref";
 
-//    public static final long CHECK_VALID_TIME = 60 * 60 * 1000L;
-    public static final long CHECK_VALID_TIME = 60 * 1000L;
+    public static final long CHECK_VALID_TIME = 6 * 60 * 60 * 1000L;
+//    public static final long CHECK_VALID_TIME = 60 * 1000L;
 
     public static final String LAST_CHECK_TIME = "lastCheck";
 

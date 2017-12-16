@@ -75,13 +75,13 @@ public class EllipsizingTextView extends LinearLayout {
 
                 isCollapsed = !isCollapsed;
                 if (isCollapsed) {
-                    id_expand_textview.setText("展开");
+                    id_expand_textview.setText(R.string.expand);
                     if (listener != null) {
                         listener.onExpandStateChanged(true);
                     }
                     animation = new ExpandCollapseAnimation(getHeight(), collapsedHeight);
                 } else {
-                    id_expand_textview.setText("收起");
+                    id_expand_textview.setText(R.string.shrink);
                     if (listener != null) {
                         listener.onExpandStateChanged(false);
                     }
