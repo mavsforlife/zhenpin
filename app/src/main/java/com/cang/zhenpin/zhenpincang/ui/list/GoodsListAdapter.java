@@ -1,10 +1,15 @@
 package com.cang.zhenpin.zhenpincang.ui.list;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -174,6 +179,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     final Brand brand = mList.get(holder.getAdapterPosition());
                     ViewHolder h = (ViewHolder) holder;
                     h.mIvAttention.setSelected(brand.getIsAttention() == Brand.ATTENTION);
+                    showAttentionAnimator(h.mIvAttention);
                 }
             }
         }
@@ -193,12 +199,17 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public void setHasMoreData(boolean hasMoreData) {
+    public void setHasMoreData(final boolean hasMoreData) {
         mHasMoreData = hasMoreData;
         if (mFooterHolder != null) {
-            mFooterHolder.mTvNoMore.setVisibility(hasMoreData ? View.GONE : View.VISIBLE);
-            mFooterHolder.mProgressBar.setVisibility(hasMoreData ? View.VISIBLE : View.GONE);
-            mFooterHolder.mTvRetry.setVisibility(View.GONE);
+            mFooterHolder.mTvRetry.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mFooterHolder.mTvNoMore.setVisibility(hasMoreData ? View.GONE : View.VISIBLE);
+                    mFooterHolder.mProgressBar.setVisibility(hasMoreData ? View.VISIBLE : View.GONE);
+                    mFooterHolder.mTvRetry.setVisibility(View.GONE);
+                }
+            }, 500);
         }
     }
 
@@ -253,6 +264,25 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
+    private void showAttentionAnimator(View view) {
+        AnimationSet animationSet = new AnimationSet(true);
+        ScaleAnimation animationEnlarge = new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animationEnlarge.setDuration(200);
+        animationSet.addAnimation(animationEnlarge);
+
+        AlphaAnimation fadeIn = new AlphaAnimation(0.5f, 1.0f);
+        fadeIn.setDuration(400);
+        animationSet.addAnimation(fadeIn);
+
+        ScaleAnimation animationNarrow = new ScaleAnimation(1.1f, 1.0f, 1.1f, 1.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animationNarrow.setDuration(200);
+        animationNarrow.setStartOffset(200);
+        animationSet.addAnimation(animationNarrow);
+        view.startAnimation(animationSet);
+
+    }
     public interface ShareListener {
 
         void onShare(int position);

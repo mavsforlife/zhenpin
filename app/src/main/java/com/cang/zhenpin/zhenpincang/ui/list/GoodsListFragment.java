@@ -23,6 +23,8 @@ import android.widget.TextView;
 import com.cang.zhenpin.zhenpincang.R;
 import com.cang.zhenpin.zhenpincang.glide.GlideApp;
 import com.cang.zhenpin.zhenpincang.model.Brand;
+import com.cang.zhenpin.zhenpincang.model.UserInfo;
+import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.ui.register.RegisterActivity;
 import com.cang.zhenpin.zhenpincang.util.DeviceUtil;
 import com.cang.zhenpin.zhenpincang.util.DialogUtil;
@@ -377,8 +379,10 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
                 .setPositiveButton("申请代理", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        getActivity().startActivity(RegisterActivity.createIntent(getActivity()));
                         dialog.dismiss();
+                        if (!checkIsApplyed()) {
+                            getActivity().startActivity(RegisterActivity.createIntent(getActivity()));
+                        }
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -388,6 +392,14 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
                     }
                 })
                 .show();
+    }
+
+    private boolean checkIsApplyed() {
+        if (PreferencesFactory.getUserPref().getUserType() == UserInfo.TYPE_APPLY_ING_INT) {
+            ToastUtil.showShort(getActivity(), "您已经申请过代理，请等待后台处理");
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -20,6 +20,8 @@ import android.widget.TextView;
 import com.cang.zhenpin.zhenpincang.R;
 import com.cang.zhenpin.zhenpincang.glide.GlideApp;
 import com.cang.zhenpin.zhenpincang.model.Brand;
+import com.cang.zhenpin.zhenpincang.model.UserInfo;
+import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.ui.list.GoodsListAdapter;
 import com.cang.zhenpin.zhenpincang.ui.register.RegisterActivity;
 import com.cang.zhenpin.zhenpincang.util.DeviceUtil;
@@ -101,6 +103,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         mLlAll = findViewById(R.id.ll_all);
         mProgress = findViewById(R.id.ll_progress);
     }
+
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -237,6 +240,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     private void dismissProgressDialog() {
         mProgress.setVisibility(View.GONE);
     }
+
     @Override
     public void setUpShotView(final List<String> list, final List<Integer> params, final String desc, final String fileName) {
         runOnUiThread(new Runnable() {
@@ -325,7 +329,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
 
     @Override
     public void onShare(int position) {
-        if (!ShareUtil.isShareEnabled()){
+        if (!ShareUtil.isShareEnabled()) {
             showShareTip();
             return;
         }
@@ -339,8 +343,10 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                 .setPositiveButton("申请代理", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SearchActivity.this.startActivity(RegisterActivity.createIntent(SearchActivity.this));
                         dialog.dismiss();
+                        if (!checkIsApplyed()) {
+                            SearchActivity.this.startActivity(RegisterActivity.createIntent(SearchActivity.this));
+                        }
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -350,6 +356,14 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                     }
                 })
                 .show();
+    }
+
+    private boolean checkIsApplyed() {
+        if (PreferencesFactory.getUserPref().getUserType() == UserInfo.TYPE_APPLY_ING_INT) {
+            ToastUtil.showShort(this, "您已经申请过代理，请等待后台处理");
+            return true;
+        }
+        return false;
     }
 
     @Override
