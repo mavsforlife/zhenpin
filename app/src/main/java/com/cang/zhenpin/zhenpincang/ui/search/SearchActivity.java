@@ -361,6 +361,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     private boolean checkIsApplyed() {
         if (PreferencesFactory.getUserPref().getUserType() == UserInfo.TYPE_APPLY_ING_INT) {
             ToastUtil.showShort(this, "您已经申请过代理，请等待后台处理");
+            mPresenter.refreshUserInfo();
             return true;
         }
         return false;

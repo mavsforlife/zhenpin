@@ -21,10 +21,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cang.zhenpin.zhenpincang.R;
+import com.cang.zhenpin.zhenpincang.event.RefreshLoginEvent;
 import com.cang.zhenpin.zhenpincang.glide.GlideApp;
+import com.cang.zhenpin.zhenpincang.model.BaseResult;
 import com.cang.zhenpin.zhenpincang.model.Brand;
 import com.cang.zhenpin.zhenpincang.model.UserInfo;
+import com.cang.zhenpin.zhenpincang.network.BaseActivitySlienceObserver;
+import com.cang.zhenpin.zhenpincang.network.BaseObserver;
+import com.cang.zhenpin.zhenpincang.network.NetWork;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
+import com.cang.zhenpin.zhenpincang.pref.UserPreferences;
 import com.cang.zhenpin.zhenpincang.ui.register.RegisterActivity;
 import com.cang.zhenpin.zhenpincang.util.DeviceUtil;
 import com.cang.zhenpin.zhenpincang.util.DialogUtil;
@@ -33,6 +39,7 @@ import com.cang.zhenpin.zhenpincang.util.ToastUtil;
 import com.cang.zhenpin.zhenpincang.widget.TopDividerItemDecoration;
 import com.victor.loadinglayout.LoadingLayout;
 
+import org.greenrobot.eventbus.EventBus;
 import org.w3c.dom.Text;
 
 import java.io.File;
@@ -43,6 +50,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -397,6 +405,7 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
     private boolean checkIsApplyed() {
         if (PreferencesFactory.getUserPref().getUserType() == UserInfo.TYPE_APPLY_ING_INT) {
             ToastUtil.showShort(getActivity(), "您已经申请过代理，请等待后台处理");
+            mPresenter.ensureUserInfo();
             return true;
         }
         return false;

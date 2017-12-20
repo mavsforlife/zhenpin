@@ -48,5 +48,7 @@ public interface SearchContract {
         void onShareCompose(int position);
 
         void onShotToFile(LinearLayout ll, String desc, String fileName);
+
+        void refreshUserInfo();
     }
 }

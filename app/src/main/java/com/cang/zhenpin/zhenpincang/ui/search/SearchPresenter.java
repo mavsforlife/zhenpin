@@ -6,14 +6,20 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.LinearLayout;
 
+import com.cang.zhenpin.zhenpincang.R;
+import com.cang.zhenpin.zhenpincang.event.RefreshLoginEvent;
 import com.cang.zhenpin.zhenpincang.model.BaseResult;
 import com.cang.zhenpin.zhenpincang.model.Brand;
 import com.cang.zhenpin.zhenpincang.model.BrandList;
+import com.cang.zhenpin.zhenpincang.model.UserInfo;
 import com.cang.zhenpin.zhenpincang.network.BaseObserver;
 import com.cang.zhenpin.zhenpincang.network.NetWork;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
+import com.cang.zhenpin.zhenpincang.pref.UserPreferences;
 import com.cang.zhenpin.zhenpincang.util.DownLoadImageUtil;
 import com.cang.zhenpin.zhenpincang.util.StringUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -262,6 +268,39 @@ public class SearchPresenter implements SearchContract.Presenter {
                     public void onComplete() {
                         super.onComplete();
                         mView.shareTo(mFiles, desc);
+                    }
+                });
+    }
+
+    @Override
+    public void refreshUserInfo() {
+        final UserPreferences preferences = PreferencesFactory.getUserPref();
+        final int userType = preferences.getUserType();
+
+        String openId = preferences.getOpenId();
+        String nickName = preferences.getUserId();
+        String headImgUrl = preferences.getHeadImgUrl();
+        int sex = preferences.getUserSex();
+        NetWork.getsBaseApi()
+                .wxLogin(openId, nickName, headImgUrl, sex)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseObserver<BaseResult<UserInfo>>(mView) {
+                    @Override
+                    public void onNext(BaseResult<UserInfo> userInfoBaseResult) {
+                        super.onNext(userInfoBaseResult);
+                        UserInfo info = userInfoBaseResult.getData();
+                        if (null != info) {
+                            preferences.saveUserInfo(userInfoBaseResult.getData());
+                            if (userType == info.getMUserType()) return;
+                            EventBus.getDefault().post(new RefreshLoginEvent());
+                            if (info.getMUserType() == UserInfo.TYPE_AGENT_INT) {
+                                mView.showTip(R.string.congratulate_to_apply_success);
+                            } else if (info.getMUserType() == UserInfo.TYPE_REJECT_INT) {
+                                mView.showTip(R.string.apply_reject_and_contact_us);
+                            }
+                        }
+
                     }
                 });
     }

@@ -50,5 +50,7 @@ public interface GoodsListContract {
         void onShareCompose(int position);
 
         void onShotToFile(LinearLayout ll, String desc, String fileName);
+
+        void ensureUserInfo();
     }
 }
