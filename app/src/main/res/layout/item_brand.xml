@@ -31,7 +31,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/selector_attention_tab"
-        android:layout_alignParentRight="true"/>
+        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_alignParentEnd="true"/>
 
     <com.cang.zhenpin.zhenpincang.widget.EllipsizingTextView
         android:id="@+id/tv_content"

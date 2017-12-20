@@ -266,19 +266,24 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private void showAttentionAnimator(View view) {
         AnimationSet animationSet = new AnimationSet(true);
-        ScaleAnimation animationEnlarge = new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f,
+        ScaleAnimation animationEnlarge = new ScaleAnimation(1.0f, 1.05f, 1.0f, 1.05f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        animationEnlarge.setDuration(200);
+        animationEnlarge.setDuration(100);
         animationSet.addAnimation(animationEnlarge);
 
-        AlphaAnimation fadeIn = new AlphaAnimation(0.5f, 1.0f);
-        fadeIn.setDuration(400);
+        AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.8f);
+        fadeOut.setDuration(100);
+        animationSet.addAnimation(fadeOut);
+
+        AlphaAnimation fadeIn = new AlphaAnimation(0.8f, 1.0f);
+        fadeIn.setDuration(100);
+        fadeIn.setStartOffset(100);
         animationSet.addAnimation(fadeIn);
 
-        ScaleAnimation animationNarrow = new ScaleAnimation(1.1f, 1.0f, 1.1f, 1.0f,
+        ScaleAnimation animationNarrow = new ScaleAnimation(1.05f, 1.0f, 1.05f, 1.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        animationNarrow.setDuration(200);
-        animationNarrow.setStartOffset(200);
+        animationNarrow.setDuration(100);
+        animationNarrow.setStartOffset(100);
         animationSet.addAnimation(animationNarrow);
         view.startAnimation(animationSet);
 
