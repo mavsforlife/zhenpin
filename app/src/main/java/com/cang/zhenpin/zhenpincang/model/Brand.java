@@ -16,6 +16,30 @@ public class Brand {
     public static final int NOT_ATTENTION = 0;
     public static final int ATTENTION = 1;
     /**
+     * ID : 80
+     * TypeClassID : 10
+     * Name : 2018年货节
+     * Desc : 随着春节的到来年味越来越浓各位小伙伴是不是早已经“无心上班，只想过年”先稳住躁动的心，小臻弱弱的问一句“家里的年货，过年的新衣准备好了吗？—年货节—年终大型仓储特卖会品牌鞋服大联合 为你备足年货
+     * PicPath : ["https://api.zhenpincang.com/uploads/151755043394545.jpeg","https://api.zhenpincang.com/uploads/151755055639470.png","https://api.zhenpincang.com/uploads/151755073724941.png"]
+     * UploadUser : 0
+     * UploadTime : null
+     * IsDelete : 0
+     * StartDate : 0000-00-00 00:00:00
+     * EndDate : 0000-00-00 00:00:00
+     * ViewCount : null
+     * ADate : 2018-02-02 13:49:35
+     * ISBuy : 0
+     * Price : 0
+     * Check : 00
+     * brandname : 臻品购
+     * brandid : 10
+     * brandpic : https://api.zhenpincang.com//uploads/151755085970938.png
+     * InfoType : 1
+     * Iscon : 0
+     * IsconDesc : 未关注
+     * Attribute : []
+     */
+    /**
      * ID : 6
      * TypeClassID : 2
      * Name : sss
@@ -68,6 +92,58 @@ public class Brand {
     @SerializedName("Iscon")
     private int mIsAttention;//0-未关注 1-已关注
     private boolean isCollapsed = true;
+
+    @SerializedName("ISBuy")
+    private int mIsBuy;
+    @SerializedName("Price")
+    private int mPrice;
+    @SerializedName("Check")
+    private String mCheck;
+    @SerializedName("IsconDesc")
+    private String mIsconDesc;
+    @SerializedName("Attribute")
+    private List<Attribute> mAttribute;
+
+    @Keep
+    public static class Attribute {
+
+        /**
+         * ID : 368
+         * Name : L码
+         * Quantity : 0
+         */
+
+        @SerializedName("ID")
+        private int mID;
+        @SerializedName("Name")
+        private String mName;
+        @SerializedName("Quantity")
+        private int mQuantity;
+
+        public int getMID() {
+            return mID;
+        }
+
+        public void setMID(int mID) {
+            this.mID = mID;
+        }
+
+        public String getMName() {
+            return mName;
+        }
+
+        public void setMName(String mName) {
+            this.mName = mName;
+        }
+
+        public int getMQuantity() {
+            return mQuantity;
+        }
+
+        public void setMQuantity(int mQuantity) {
+            this.mQuantity = mQuantity;
+        }
+    }
 
     public String getId() {
         return id;
@@ -211,5 +287,45 @@ public class Brand {
 
     public void setCollapsed(boolean collapsed) {
         isCollapsed = collapsed;
+    }
+
+    public int getIsBuy() {
+        return mIsBuy;
+    }
+
+    public void setIsBuy(int isBuy) {
+        mIsBuy = isBuy;
+    }
+
+    public int getPrice() {
+        return mPrice;
+    }
+
+    public void setPrice(int price) {
+        mPrice = price;
+    }
+
+    public String getCheck() {
+        return mCheck;
+    }
+
+    public void setCheck(String check) {
+        mCheck = check;
+    }
+
+    public String getIsconDesc() {
+        return mIsconDesc;
+    }
+
+    public void setIsconDesc(String isconDesc) {
+        mIsconDesc = isconDesc;
+    }
+
+    public List<Attribute> getAttribute() {
+        return mAttribute;
+    }
+
+    public void setAttribute(List<Attribute> attribute) {
+        mAttribute = attribute;
     }
 }

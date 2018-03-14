@@ -1,6 +1,5 @@
 package com.cang.zhenpin.zhenpincang.ui.list;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,18 +10,34 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cang.zhenpin.zhenpincang.R;
+import com.cang.zhenpin.zhenpincang.event.UpdateShopCartEvent;
 import com.cang.zhenpin.zhenpincang.glide.GlideApp;
+import com.cang.zhenpin.zhenpincang.model.BaseResult;
 import com.cang.zhenpin.zhenpincang.model.Brand;
+import com.cang.zhenpin.zhenpincang.network.BaseActivityObserver;
+import com.cang.zhenpin.zhenpincang.network.NetWork;
+import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.ui.brand.BrandActivity;
+import com.cang.zhenpin.zhenpincang.util.ToastUtil;
 import com.cang.zhenpin.zhenpincang.widget.EllipsizingTextView;
 import com.cang.zhenpin.zhenpincang.widget.ninegridlayout.ImgGridView;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
+import com.zhy.view.flowlayout.TagView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by victor on 2017/11/28.
@@ -109,7 +124,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ViewHolder) {
             final Brand brand = mList.get(holder.getAdapterPosition());
             final ViewHolder h = (ViewHolder) holder;
@@ -132,7 +147,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             h.mTvShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.onShare(position);
+                    mListener.onShare(h.getAdapterPosition());
                 }
             });
             h.mIvAttention.setSelected(brand.getIsAttention() == Brand.ATTENTION);
@@ -165,6 +180,70 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 brand.getBrandId()));
                     }
                 });
+            }
+            if (brand.getAttribute() != null && brand.getAttribute().size() > 0 && brand.getIsBuy() == 1) {
+                h.mBuyLayout.setVisibility(View.VISIBLE);
+                h.mTags.setAdapter(new TagAdapter<Brand.Attribute>(brand.getAttribute()) {
+                    @Override
+                    public View getView(FlowLayout parent, int position, Brand.Attribute attribute) {
+                        TextView tv = (TextView) mLayoutInflater.inflate(R.layout.item_tag, parent, false);
+                        tv.setText(brand.getAttribute().get(position).getMName());
+                        return tv;
+                    }
+                });
+                final int[] checkPosition = {-1};
+                h.mTags.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+                    @Override
+                    public boolean onTagClick(View view, int position, FlowLayout parent) {
+                        h.mBuy.setTag(brand.getAttribute().get(position));
+                        checkPosition[0] = position;
+                        return true;
+                    }
+                });
+                h.mBuy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Brand.Attribute attr = (Brand.Attribute) v.getTag();
+                        if (attr == null) {
+                            ToastUtil.showShort(mContext, "请选择尺码类型！");
+                        } else {
+                            if (attr.getMQuantity() == 0) {
+                                ToastUtil.showShort(mContext, "很抱歉，您选择的尺码类型已售罄");
+                            } else {
+                                NetWork.getsBaseApi()
+                                        .addToShoppingCart(PreferencesFactory.getUserPref().getId(),
+                                                attr.getMID(),1)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new BaseActivityObserver<BaseResult>(mContext) {
+                                            @Override
+                                            public void onNext(BaseResult baseResult) {
+                                                super.onNext(baseResult);
+                                                ToastUtil.showShort(mContext, "您选择的" + attr.getMName() + "已加入购物车");
+                                                int clearPosition = checkPosition[0];
+                                                if (clearPosition >= 0 && clearPosition < h.mTags.getChildCount()) {
+                                                    ((TagView)h.mTags.getChildAt(clearPosition)).setChecked(false);
+                                                }
+                                                EventBus.getDefault().post(new UpdateShopCartEvent());
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                super.onError(e);
+                                                ToastUtil.showShort(mContext, "加入购物车失败");
+                                                int clearPosition = checkPosition[0];
+                                                if (clearPosition >= 0 && clearPosition < h.mTags.getChildCount()) {
+                                                    ((TagView)h.mTags.getChildAt(clearPosition)).setChecked(false);
+                                                }
+                                            }
+                                        });
+
+                            }
+                        }
+                    }
+                });
+            } else {
+                h.mBuyLayout.setVisibility(View.GONE);
             }
         }
     }
@@ -226,6 +305,9 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private EllipsizingTextView mTvMsg;
         private ImageView mIvAvatar, mIvAttention;
         private ImgGridView mImageNineGridView;
+        private LinearLayout mBuyLayout;
+        private TextView mBuy;
+        private TagFlowLayout mTags;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -235,6 +317,9 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mImageNineGridView = itemView.findViewById(R.id.img_view);
             mTvShare = itemView.findViewById(R.id.share);
             mIvAttention = itemView.findViewById(R.id.iv_attention);
+            mTags = itemView.findViewById(R.id.tag);
+            mBuy = itemView.findViewById(R.id.tv_buy);
+            mBuyLayout = itemView.findViewById(R.id.layout_buy);
         }
     }
 

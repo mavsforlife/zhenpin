@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/bg_tag_selected_true"
+        android:state_checked="true"
+        >
+    </item>
+    <item
+        android:drawable="@drawable/bg_tag_selected_false"></item>
+</selector>

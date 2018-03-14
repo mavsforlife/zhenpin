@@ -2,6 +2,7 @@ package com.cang.zhenpin.zhenpincang.pref;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.LoginFilter;
 import android.text.TextUtils;
 
 import com.cang.zhenpin.zhenpincang.base.App;
@@ -44,6 +45,8 @@ public class UserPreferences extends BasePreferences {
 
     private static final String USER_TYPE_NAME = "user_type_name";
 
+    private static final String USER_NAME = "user_name";
+
     @Override
     public SharedPreferences getSharePreferences() {
         return App.getsInstance().getSharedPreferences(USER_INFO_PREFS, Context.MODE_PRIVATE);
@@ -63,6 +66,7 @@ public class UserPreferences extends BasePreferences {
         putString(USER_EMAIL, info.getMEmail());
         putString(USER_CODE, info.getMUserCode());
         putString(USER_TYPE_NAME, info.getUserTpyeStr());
+        putString(USER_NAME, info.getMPrincipal());
     }
 
     public void saveWxInfo(WxUserInfo info) {
@@ -92,6 +96,7 @@ public class UserPreferences extends BasePreferences {
     public int getUserSex() {
         return getInt(_SEX,DEFAULT_ZERO);
     }
+
     public String getUserPhone() {
         return getString(USER_PHONE, DEFAULT_NULL);
     }
@@ -114,5 +119,9 @@ public class UserPreferences extends BasePreferences {
 
     public String getUserTypeStr() {
         return getString(USER_TYPE_NAME, UserInfo.TYPE_NORMAL);
+    }
+
+    public String getUserName() {
+        return getString(USER_NAME, DEFAULT_NULL);
     }
 }

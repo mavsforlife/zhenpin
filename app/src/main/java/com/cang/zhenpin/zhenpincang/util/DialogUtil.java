@@ -3,6 +3,7 @@ package com.cang.zhenpin.zhenpincang.util;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
@@ -34,6 +35,11 @@ public class DialogUtil {
     }
 
     private static ProgressDialog mProgressDialog;
+
+    public static void showProgressDialog(Context context, @StringRes int resId) {
+        showProgressDialog(context, context.getString(resId));
+    }
+
     public static void showProgressDialog(Context context, String string) {
         mProgressDialog = new ProgressDialog(context);
         mProgressDialog.setMessage(string);

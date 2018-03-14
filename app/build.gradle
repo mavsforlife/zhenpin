@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'key0'
+            keyPassword '5505889anqing'
+            storeFile file('/Users/victor/Documents/zhenpin/zhenpinKey/Untitled')
+            storePassword '5505889'
+        }
+    }
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.cang.zhenpin.zhenpincang"
@@ -9,6 +17,7 @@ android {
         versionCode 101
         versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -22,6 +31,8 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
+    }
+    productFlavors {
     }
 }
 
@@ -44,6 +55,7 @@ dependencies {
     api 'com.squareup.retrofit2:retrofit:2.3.0'
     api 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     api 'com.google.code.gson:gson:2.8.0'
+    api 'com.hyman:flowlayout-lib:1.1.2'
     //RxJava的依赖包（我使用的最新版本）
     api 'io.reactivex.rxjava2:rxjava:2.0.7'
     //RxAndroid的依赖包

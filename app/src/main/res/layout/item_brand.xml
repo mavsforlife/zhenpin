@@ -117,4 +117,41 @@
         android:text="@string/share"
         android:textColor="@drawable/selector_tab_text"
         android:background="@drawable/bg_press_item"/>
+
+    <LinearLayout
+        android:id="@+id/layout_buy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/share"
+        android:layout_toEndOf="@+id/iv_avatar"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_4">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="先选尺码，再按尺寸下单"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/tag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/line_video_list"
+                app:max_select="1"
+                android:paddingBottom="@dimen/dp_20"/>
+
+            <TextView
+                android:id="@+id/tv_buy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:text="购买"/>
+        </FrameLayout>
+    </LinearLayout>
 </RelativeLayout>

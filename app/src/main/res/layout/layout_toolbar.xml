@@ -21,6 +21,18 @@
         android:visibility="gone"/>
 
     <TextView
+        android:id="@+id/tv_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:paddingEnd="@dimen/dp_10"
+        android:paddingStart="@dimen/dp_10"
+        android:gravity="center"
+        android:text="@string/edit"
+        android:textColor="@color/white"
+        android:visibility="gone"/>
+
+    <TextView
         android:id="@+id/tv_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -13,8 +13,12 @@ import android.widget.TextView;
 import com.cang.zhenpin.zhenpincang.R;
 import com.cang.zhenpin.zhenpincang.event.RefreshLoginEvent;
 import com.cang.zhenpin.zhenpincang.glide.GlideApp;
+import com.cang.zhenpin.zhenpincang.model.AddressList;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.pref.UserPreferences;
+import com.cang.zhenpin.zhenpincang.ui.about.AboutUsActivity;
+import com.cang.zhenpin.zhenpincang.ui.addresslist.AddressListActivity;
+import com.cang.zhenpin.zhenpincang.ui.orderlist.OrderListActivity;
 import com.cang.zhenpin.zhenpincang.util.DeviceUtil;
 import com.cang.zhenpin.zhenpincang.util.FileUtil;
 import com.cang.zhenpin.zhenpincang.util.ToastUtil;
@@ -38,7 +42,6 @@ public class UserFragment extends Fragment implements UserContract.View, View.On
 
     private ImageView mIvAvatar;
     private TextView mTvNick, mTvPhone, mTvId;
-    private LinearLayout mLlApply, mLlStatus, mLlContact, mLlCheck, mLlClear, mLlLogOut;
     private TextView mTvStatus, mTvFileSize, mTvVersion;
 
     private UserPreferences mUserPreferences;
@@ -97,21 +100,29 @@ public class UserFragment extends Fragment implements UserContract.View, View.On
         mTvPhone = v.findViewById(R.id.tv_phone);
         mTvId = v.findViewById(R.id.tv_id);
 
-        mLlApply = v.findViewById(R.id.ll_apply);
-        mLlApply.setOnClickListener(this);
-        mLlStatus = v.findViewById(R.id.ll_status);
+        LinearLayout llAddress = v.findViewById(R.id.ll_address);
+        llAddress.setOnClickListener(this);
+        LinearLayout llOrder = v.findViewById(R.id.ll_order);
+        llOrder.setOnClickListener(this);
+
+        LinearLayout llApply = v.findViewById(R.id.ll_apply);
+        llApply.setOnClickListener(this);
+//        LinearLayout llStatus = v.findViewById(R.id.ll_status);
 //        mLlStatus.setOnClickListener(this);
         mTvStatus = v.findViewById(R.id.tv_status);
-        mLlContact = v.findViewById(R.id.ll_contact_us);
-        mLlContact.setOnClickListener(this);
-        mLlCheck = v.findViewById(R.id.ll_check_update);
-        mLlCheck.setOnClickListener(this);
+        LinearLayout llContact = v.findViewById(R.id.ll_contact_us);
+        llContact.setOnClickListener(this);
+        LinearLayout llCheck = v.findViewById(R.id.ll_check_update);
+        llCheck.setOnClickListener(this);
         mTvVersion = v.findViewById(R.id.tv_version);
-        mLlClear = v.findViewById(R.id.ll_clear_cache);
-        mLlClear.setOnClickListener(this);
+        LinearLayout llClear = v.findViewById(R.id.ll_clear_cache);
+        llClear.setOnClickListener(this);
         mTvFileSize = v.findViewById(R.id.tv_file_size);
-        mLlLogOut = v.findViewById(R.id.ll_log_out);
-        mLlLogOut.setOnClickListener(this);
+        LinearLayout llLogOut = v.findViewById(R.id.ll_log_out);
+        llLogOut.setOnClickListener(this);
+
+        LinearLayout llAbout = v.findViewById(R.id.ll_about);
+        llAbout.setOnClickListener(this);
     }
 
     private void initData() {
@@ -133,6 +144,12 @@ public class UserFragment extends Fragment implements UserContract.View, View.On
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.ll_address:
+                getActivity().startActivity(AddressListActivity.createIntent(getActivity()));
+                break;
+            case R.id.ll_order:
+                getActivity().startActivity(OrderListActivity.createIntent(getActivity()));
+                break;
             case R.id.ll_apply:
                 mPresenter.apply();
                 break;
@@ -144,6 +161,9 @@ public class UserFragment extends Fragment implements UserContract.View, View.On
                 break;
             case R.id.ll_clear_cache:
                 mPresenter.clearCache();
+                break;
+            case R.id.ll_about:
+                getActivity().startActivity(AboutUsActivity.createIntent(getActivity()));
                 break;
             case R.id.ll_log_out:
                 mPresenter.logOut();

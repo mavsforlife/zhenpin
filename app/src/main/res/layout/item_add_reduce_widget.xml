@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_100"
+    android:layout_height="@dimen/dp_30"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_corners_2dp">
+
+    <TextView
+        android:id="@+id/reduce"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="—"
+        android:textSize="@dimen/sp_18"/>
+
+    <View
+        android:layout_width="@dimen/dp_1"
+        android:layout_height="match_parent"
+        android:background="@color/line_dark"/>
+
+    <com.cang.zhenpin.zhenpincang.widget.BackEditText
+        android:id="@+id/count"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:inputType="number"
+        android:gravity="center"
+        android:background="@null"
+        android:textSize="@dimen/sp_14"
+        android:imeOptions="actionDone"/>
+
+    <View
+        android:layout_width="@dimen/dp_1"
+        android:layout_height="match_parent"
+        android:background="@color/line_dark"/>
+
+    <TextView
+        android:id="@+id/add"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="@dimen/sp_20"
+        android:text="+"/>
+</LinearLayout>

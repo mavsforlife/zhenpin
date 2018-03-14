@@ -8,7 +8,8 @@ package com.cang.zhenpin.zhenpincang.base;
 public class BaseConstants {
 
     public static final String WX_APP_ID = "wxe267c92ee0174373";
-    public static final String WX_APP_SECRET = "c30076b9ffdc0c9e9a66c9bbf689b126";
+    public static final String WX_APP_SECRET = "0675cad6e4f4039b475a8fb0aef18ac8";
+    public static final String APP_SIGN = "6e8e6abb248b69090e8a2c75c1335e3c";//应用签名
     public static final String AUTHORIZATION_CODE = "authorization_code";
     public static final String ZH_CN = "zh_CN";
 

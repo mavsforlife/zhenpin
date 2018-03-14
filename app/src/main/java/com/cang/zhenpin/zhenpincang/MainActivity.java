@@ -29,6 +29,7 @@ import com.cang.zhenpin.zhenpincang.network.download.UpdateHelper;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.pref.UserPreferences;
 import com.cang.zhenpin.zhenpincang.ui.about.AboutUsFragment;
+import com.cang.zhenpin.zhenpincang.ui.cart.ShoppingCartFragment;
 import com.cang.zhenpin.zhenpincang.ui.list.GoodsListFragment;
 import com.cang.zhenpin.zhenpincang.ui.login.LoginActivity;
 import com.cang.zhenpin.zhenpincang.ui.search.SearchActivity;
@@ -47,7 +48,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ShoppingCartFragment.OnStatusEndListener {
 
     LinearLayout mContainer;
     RadioGroup mRadioGroup;
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RadioButton mAbout;
     TextView mTvBar;
     ImageView mIvSearch;
+    TextView mTvEdit;
+
+    private boolean mIsEdit;
 
     private List<Fragment> mFragments;
     private int position;   //当前选中的位置
@@ -93,14 +97,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mIvSearch = findViewById(R.id.iv_search);
         mIvSearch.setVisibility(View.VISIBLE);
         mIvSearch.setOnClickListener(this);
+        mTvEdit = findViewById(R.id.tv_edit);
+        mTvEdit.setOnClickListener(this);
     }
 
     private void initData() {
         mFragments = new ArrayList<>();
         mFragments.add(GoodsListFragment.newInstance());
         mFragments.add(GoodsListFragment.newInstance(null, true));
+        ShoppingCartFragment scf = ShoppingCartFragment.newInstance();
+        scf.setOnStatusEndListener(this);
+        mFragments.add(scf);
         mFragments.add(UserFragment.newInstance());
-        mFragments.add(AboutUsFragment.newInstance());
 
         mRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
         mRadioGroup.check(R.id.rb_home);
@@ -112,27 +120,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (checkedId) {
                 case R.id.rb_home:
                     position = 0;
+                    setRightIcon(false);
                     setTitle(R.string.app_name);
                     break;
 
                 case R.id.rb_atten:
                     position = 1;
+                    setRightIcon(false);
                     setTitle(R.string.attention);
                     break;
 
                 case R.id.rb_user:
                     position = 2;
-                    Fragment fragment = mFragments.get(2);
-                    if (fragment != null && fragment instanceof UserFragment) {
-                        UserFragment userFragment = (UserFragment) fragment;
-                        userFragment.setFileSize();
-                    }
-                    setTitle(R.string.mine);
+                    setRightIcon(true);
+                    setTitle(R.string.shopping_cart);
                     break;
 
                 case R.id.rb_about:
                     position = 3;
-                    setTitle(R.string.about);
+                    Fragment fragment = mFragments.get(3);
+                    if (fragment != null && fragment instanceof UserFragment) {
+                        UserFragment userFragment = (UserFragment) fragment;
+                        userFragment.setFileSize();
+                    }
+                    setRightIcon(false);
+                    setTitle(R.string.mine);
                     break;
             }
             Fragment currentFragment = mFragments.get(position);
@@ -162,6 +174,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             transaction.add(R.id.container, currentFragment).commit();
         } else {
             transaction.show(currentFragment).commit();
+            if (currentFragment instanceof ShoppingCartFragment) {
+                ShoppingCartFragment scf = (ShoppingCartFragment) currentFragment;
+                scf.onRefresh();
+            }
         }
     }
 
@@ -174,10 +190,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTvBar.setText(idRes);
     }
 
+    private void setRightIcon(boolean isShowEdit) {
+        mIvSearch.setVisibility(isShowEdit ? View.GONE : View.VISIBLE);
+        mTvEdit.setVisibility(isShowEdit ? View.VISIBLE : View.GONE);
+    }
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.iv_search) {
             startActivity(SearchActivity.createIntent(this));
+        } else if (v.getId() == R.id.tv_edit) {
+            Fragment fragment = mFragments.get(2);
+            if (fragment != null && fragment instanceof ShoppingCartFragment) {
+                ShoppingCartFragment scf = (ShoppingCartFragment) fragment;
+                mIsEdit = !mIsEdit;
+                scf.onEditClick(mIsEdit);
+                mTvEdit.setText(mIsEdit ? R.string.sure : R.string.edit);
+            }
         }
     }
 
@@ -225,5 +254,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public void onEditDone() {
+        mIsEdit = false;
+        mTvEdit.setText(R.string.edit);
     }
 }

@@ -54,8 +54,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onResp(BaseResp baseResp) {
-        Log.d(TAG, "baseRep code is" + baseResp.errCode);
-        Log.d(TAG, "baseRep msg is" + baseResp.errStr);
+        Log.d(TAG, "baseResp code is " + baseResp.errCode);
+        Log.d(TAG, "baseResp msg is " + baseResp.errStr);
+        Log.d(TAG, baseResp.toString());
         if (baseResp instanceof SendAuth.Resp) {
             SendAuth.Resp resp = (SendAuth.Resp) baseResp;
             switch (resp.errCode) {
@@ -93,6 +94,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                         if (wxAccessResult.getMErrCode() == 0) {
                         getUserInfo(wxAccessResult.getMAccessToken(),
                                 wxAccessResult.getMOpenId());
+                        } else {
+                            finishSelf();
                         }
                     }
 

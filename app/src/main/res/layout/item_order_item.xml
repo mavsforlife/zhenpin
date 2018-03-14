@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/line"
+    android:orientation="horizontal"
+    android:layout_marginTop="@dimen/dp_2"
+    android:layout_marginBottom="@dimen/dp_2"
+    android:padding="@dimen/dp_10">
+
+    <ImageView
+        android:id="@+id/pic"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_80"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/pic"
+        android:textColor="@color/black"
+        android:maxLines="2"
+        android:minLines="2"
+        android:layout_marginBottom="@dimen/dp_20"/>
+
+    <TextView
+        android:id="@+id/size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/size"
+        android:layout_toEndOf="@+id/pic"
+        android:layout_below="@id/content"/>
+
+
+    <TextView
+        android:id="@+id/pay_price"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/content"
+        android:text="@string/pay_price"/>
+
+</RelativeLayout>

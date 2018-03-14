@@ -1,0 +1,104 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cang.zhenpin.zhenpincang.ui.cart.ShoppingCartFragment">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.victor.loadinglayout.LoadingLayout
+            android:id="@id/loading_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/yellow_tip"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_8"
+                    android:text="@string/tip_pay_in_30_minute"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_cart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingBottom="@dimen/dp_60"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="bottom"
+                        android:orientation="horizontal"
+                        android:background="@color/line_online_popu_dark"
+                        android:gravity="center_vertical">
+
+                        <CheckBox
+                            android:id="@+id/check_all"
+                            android:layout_width="40dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/dp_10"
+                            android:button="@drawable/selector_address_default"
+                            android:gravity="center"
+                            android:layout_gravity="center"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/select_all"
+                            android:paddingEnd="10dp"/>
+
+                        <TextView
+                            android:id="@+id/delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@string/all_count"
+                            android:gravity="center"
+                            android:textSize="@dimen/sp_15"
+                            android:textColor="@color/colorPrimary"/>
+
+                        <TextView
+                            android:id="@+id/price"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/sp_15"
+                            android:textColor="@color/colorPrimary"/>
+
+                        <TextView
+                            android:id="@+id/charge"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorPrimary"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_18"
+                            android:text="@string/charge"/>
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </com.victor.loadinglayout.LoadingLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

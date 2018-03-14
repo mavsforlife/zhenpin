@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cang.zhenpin.zhenpincang.ui.confirmorder.ConfirmOrderActivity">
+
+    <include layout="@layout/layout_toolbar"/>
+
+    <!--<View-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/dp_5"-->
+    <!--android:background="@color/line_expert"/>-->
+
+    <com.victor.loadinglayout.LoadingLayout
+        android:id="@id/loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_no_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_10"
+                    android:text="@string/click_add_address"
+                    android:visibility="gone"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/dp_5"
+                    android:paddingEnd="@dimen/dp_5"
+                    android:paddingTop="@dimen/dp_10"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_18"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_16"/>
+
+                    <TextView
+                        android:id="@+id/phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_30"
+                        android:layout_toEndOf="@+id/name"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_16"/>
+
+                    <ImageView
+                        android:id="@+id/iv_location"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_below="@+id/name"
+                        android:layout_marginEnd="@dimen/dp_5"
+                        android:layout_marginTop="@dimen/dp_9"
+                        android:src="@drawable/ic_location"/>
+
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/name"
+                        android:layout_marginEnd="@dimen/dp_30"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:layout_toEndOf="@+id/iv_location"
+                        android:drawablePadding="@dimen/dp_5"
+                        android:textSize="@dimen/sp_12"/>
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_arrow_right"/>
+                </RelativeLayout>
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_5"
+                android:background="@color/line_expert"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_80"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_pic"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:layout_marginStart="@dimen/dp_10"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_5"
+                android:background="@color/line_expert"/>
+
+            <LinearLayout
+                android:id="@+id/ll_wx_pay"
+                style="@style/linear_layout_ripple"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawablePadding="@dimen/dp_10"
+                    android:drawableStart="@drawable/ic_wx_pay"
+                    android:gravity="center_vertical"
+                    android:text="@string/wechat_pay"/>
+
+                <CheckBox
+                    android:id="@+id/cb_wx_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@null"
+                    android:button="@drawable/selector_address_default"
+                    android:checked="true"
+                    android:clickable="false"
+                    android:duplicateParentState="true"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_05"
+                android:background="@color/line_expert"/>
+
+            <LinearLayout
+                android:id="@+id/ll_ali_pay"
+                style="@style/linear_layout_ripple"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawablePadding="@dimen/dp_10"
+                    android:drawableStart="@drawable/ic_ali_pay"
+                    android:gravity="center_vertical"
+                    android:text="@string/ali_pay"/>
+
+                <CheckBox
+                    android:id="@+id/cb_ali_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@null"
+                    android:button="@drawable/selector_address_default"
+                    android:clickable="false"
+                    android:duplicateParentState="true"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_05"
+                android:background="@color/line_expert"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/good_price"/>
+
+                <TextView
+                    android:id="@+id/total_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"/>
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/yellow_tip"
+                android:gravity="center"
+                android:padding="@dimen/dp_8"
+                android:text="@string/tip_pay_in_30_minute"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/real_fee"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="end|center"
+                    android:padding="@dimen/dp_10"
+                    android:text="实付款：¥400.00"
+                    android:textColor="@color/red"/>
+
+                <TextView
+                    android:id="@+id/submit"
+                    android:layout_width="@dimen/dp_120"
+                    android:layout_height="match_parent"
+                    android:background="@color/red"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_10"
+                    android:text="@string/submit_order"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_18"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.victor.loadinglayout.LoadingLayout>
+
+</LinearLayout>

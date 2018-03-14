@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
 
+import com.cang.zhenpin.zhenpincang.base.App;
+
 /**
  * Created by victor on 2017/11/26.
  * Email: wwmdirk@gmail.com
@@ -12,11 +14,19 @@ import android.widget.Toast;
 public class ToastUtil {
 
     public static void showShort(Context context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        if (context != null) {
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(App.getsInstance(), msg, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static void showShort(Context context, @StringRes int resId) {
-        Toast.makeText(context, context.getString(resId), Toast.LENGTH_SHORT).show();
+        if (context != null) {
+            Toast.makeText(context, context.getString(resId), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(App.getsInstance(), App.getsInstance().getText(resId), Toast.LENGTH_SHORT).show();
+        }
 
     }
 
