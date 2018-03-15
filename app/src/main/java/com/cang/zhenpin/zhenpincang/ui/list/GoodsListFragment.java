@@ -1,7 +1,6 @@
 package com.cang.zhenpin.zhenpincang.ui.list;
 
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,16 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cang.zhenpin.zhenpincang.R;
-import com.cang.zhenpin.zhenpincang.event.RefreshLoginEvent;
 import com.cang.zhenpin.zhenpincang.glide.GlideApp;
-import com.cang.zhenpin.zhenpincang.model.BaseResult;
 import com.cang.zhenpin.zhenpincang.model.Brand;
 import com.cang.zhenpin.zhenpincang.model.UserInfo;
-import com.cang.zhenpin.zhenpincang.network.BaseActivitySlienceObserver;
-import com.cang.zhenpin.zhenpincang.network.BaseObserver;
-import com.cang.zhenpin.zhenpincang.network.NetWork;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
-import com.cang.zhenpin.zhenpincang.pref.UserPreferences;
 import com.cang.zhenpin.zhenpincang.ui.register.RegisterActivity;
 import com.cang.zhenpin.zhenpincang.util.DeviceUtil;
 import com.cang.zhenpin.zhenpincang.util.DialogUtil;
@@ -39,18 +31,15 @@ import com.cang.zhenpin.zhenpincang.util.ToastUtil;
 import com.cang.zhenpin.zhenpincang.widget.TopDividerItemDecoration;
 import com.victor.loadinglayout.LoadingLayout;
 
-import org.greenrobot.eventbus.EventBus;
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -294,7 +283,7 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
                     showTip("没有图片，分享失败");
                     return;
                 }
-                io.reactivex.Observable.just(mLlAll)
+                Observable.just(mLlAll)
                         .map(new Function<LinearLayout, LinearLayout>() {
                             @Override
                             public LinearLayout apply(LinearLayout linearLayout) throws Exception {

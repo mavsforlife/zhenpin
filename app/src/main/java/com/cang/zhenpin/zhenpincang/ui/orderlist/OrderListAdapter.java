@@ -111,7 +111,6 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private void bindOrderFooter(final OrderFooter holder) {
         Object obj = mDatas.get(holder.getAdapterPosition());
-        final int position = holder.getAdapterPosition();
         if (obj instanceof OrderProxy) {
             final OrderProxy orderProxy = (OrderProxy) obj;
 
@@ -128,6 +127,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 holder.mCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        final int pos = holder.getAdapterPosition();
                         NetWork.getsBaseApi()
                                 .delOrder(PreferencesFactory.getUserPref().getId(), orderProxy.mId)
                                 .subscribeOn(Schedulers.io())
@@ -143,13 +143,13 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                         super.onNext(baseResult);
                                         DialogUtil.dismissProgressDialog();
                                         List<Object> tempList = new ArrayList<>();
-                                        for (int i = position;
-                                             i >  position - totalCount;
+                                        for (int i = pos;
+                                             i >  pos - totalCount;
                                              i--) {
                                             tempList.add(mDatas.get(i));
                                         }
 
-                                        removeList(tempList, position - totalCount + 1,
+                                        removeList(tempList, pos - totalCount + 1,
                                                 totalCount);
                                     }
 

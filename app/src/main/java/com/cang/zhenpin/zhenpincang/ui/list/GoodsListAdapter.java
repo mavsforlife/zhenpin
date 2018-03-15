@@ -224,7 +224,6 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                                 if (clearPosition >= 0 && clearPosition < h.mTags.getChildCount()) {
                                                     ((TagView)h.mTags.getChildAt(clearPosition)).setChecked(false);
                                                 }
-                                                EventBus.getDefault().post(new UpdateShopCartEvent());
                                             }
 
                                             @Override

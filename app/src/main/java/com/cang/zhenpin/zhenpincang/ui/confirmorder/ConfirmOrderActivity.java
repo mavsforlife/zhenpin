@@ -2,7 +2,6 @@ package com.cang.zhenpin.zhenpincang.ui.confirmorder;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.MutableContextWrapper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,12 +25,9 @@ import com.cang.zhenpin.zhenpincang.model.AddOrder;
 import com.cang.zhenpin.zhenpincang.model.Address;
 import com.cang.zhenpin.zhenpincang.model.AddressList;
 import com.cang.zhenpin.zhenpincang.model.BaseResult;
-import com.cang.zhenpin.zhenpincang.model.CartBrand;
 import com.cang.zhenpin.zhenpincang.network.BaseActivityObserver;
 import com.cang.zhenpin.zhenpincang.network.NetWork;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
-import com.cang.zhenpin.zhenpincang.ui.cart.util.DecimalUtil;
-import com.cang.zhenpin.zhenpincang.ui.newaddress.NewAddressActivity;
 import com.cang.zhenpin.zhenpincang.ui.orderaddress.OrderAddressListActivity;
 import com.cang.zhenpin.zhenpincang.util.DialogUtil;
 import com.cang.zhenpin.zhenpincang.util.ToastUtil;
@@ -40,6 +36,7 @@ import com.victor.loadinglayout.LoadingLayout;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -56,7 +53,6 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
 
     private String mIds;
     private int mCount;
-    private String mTotalFee;
     private String mAddressId;
 
     private String mOrderNo;
@@ -65,7 +61,6 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
     private LoadingLayout mLoadingLayout;
     private RecyclerView mRv;
     private RelativeLayout mRlAddress;
-    private LinearLayout mAliPay, mWxPay;
     private CheckBox mCbAliPay, mCbWxPay;
     private TextView mName, mPhone, mAddress;
     private TextView mTotalCount;
@@ -106,10 +101,10 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
         mNoAddress = findViewById(R.id.tv_no_address);
         mNoAddress.setOnClickListener(this);
 
-        mAliPay = findViewById(R.id.ll_ali_pay);
-        mAliPay.setOnClickListener(this);
-        mWxPay = findViewById(R.id.ll_wx_pay);
-        mWxPay.setOnClickListener(this);
+        LinearLayout aliPay = findViewById(R.id.ll_ali_pay);
+        aliPay.setOnClickListener(this);
+        LinearLayout wxPay = findViewById(R.id.ll_wx_pay);
+        wxPay.setOnClickListener(this);
 
         mCbWxPay = findViewById(R.id.cb_wx_pay);
         mCbAliPay = findViewById(R.id.cb_ali_pay);
@@ -128,14 +123,14 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
     private void initData() {
         mIds = getIntent().getStringExtra(IntentFlag.ORDER_IDS);
         mCount = getIntent().getIntExtra(IntentFlag.ORDER_COUNT, 0);
-        mTotalFee = getIntent().getStringExtra(IntentFlag.ORDER_TOTAL_FEE);
+        String totalFee = getIntent().getStringExtra(IntentFlag.ORDER_TOTAL_FEE);
         ArrayList<String> pics = getIntent().getStringArrayListExtra(IntentFlag.ORDER_PIC);
 
         OrderDetailPicAdapter adapter = new OrderDetailPicAdapter(this, pics);
         mRv.setAdapter(adapter);
 
-        mTvTotalFee.setText(String.format(Locale.US, getString(R.string.total_fee), mTotalFee));
-        mTvRealFee.setText(String.format(Locale.US, getString(R.string.real_fee), mTotalFee));
+        mTvTotalFee.setText(String.format(Locale.US, getString(R.string.total_fee), totalFee));
+        mTvRealFee.setText(String.format(Locale.US, getString(R.string.real_fee), totalFee));
 
         mTotalCount.setText(String.format(Locale.US, getString(R.string.total_count), mCount));
     }
@@ -228,10 +223,6 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
                 mPayType = PAY_TYPE_ALI;
                 break;
             case R.id.submit:
-                if (mPayType == PAY_TYPE_ALI) {
-                    ToastUtil.showShort(this, "暂不支持支付宝支付，请使用微信支付");
-                    return;
-                }
                 addOrder();
                 break;
         }
@@ -262,8 +253,7 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
                         mIds,
                         mCount,
                         mAddressId,
-                        mPayType,
-                        "0.01")
+                        mPayType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseActivityObserver<BaseResult<AddOrder>>(this) {
@@ -284,7 +274,8 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
                         }
                         EventBus.getDefault().post(new UpdateShopCartEvent());
                         mOrderNo = result.getData().getOrderNo();
-                        App.mWxApi.sendReq(PayUtils.wxPay(result.getData()));
+
+                        handlePay(result.getData());
                     }
 
                     @Override
@@ -294,6 +285,14 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
                     }
                 });
 
+    }
+
+    private void handlePay(AddOrder data) {
+        if (mPayType == PAY_TYPE_WX) {
+            App.mWxApi.sendReq(PayUtils.wxPay(data));
+        } else if (mPayType == PAY_TYPE_ALI) {
+            PayUtils.getAliPayResult(new WeakReference<>(this), data);
+        }
     }
 
     @Override
@@ -330,7 +329,7 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void onCheckPaySuccess() {
+    public void onCheckPaySuccess() {
         NetWork.getsBaseApi()
                 .checkPayStatus(mOrderNo)
                 .subscribeOn(Schedulers.io())
@@ -341,6 +340,7 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
                         super.onNext(baseResult);
                         ToastUtil.showShort(ConfirmOrderActivity.this, baseResult.getMsg());
                         EventBus.getDefault().post(new UpdateShopCartEvent());
+                        finish();
                     }
 
                     @Override

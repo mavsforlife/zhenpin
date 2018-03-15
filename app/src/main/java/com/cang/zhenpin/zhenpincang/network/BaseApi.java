@@ -126,8 +126,7 @@ public interface BaseApi {
                                               @Query(ID) String id,
                                               @Query(QUANTITY) int quantity,
                                               @Query(ADDRESSID) String addressId,
-                                              @Query(PAY_CLASS) int payType,
-                                              @Query(TOTAL_FEE) String totalFee);
+                                              @Query(PAY_CLASS) int payType);
 
     @GET("index/OrderDel")
     Observable<BaseResult> delOrder(@Query(UID) int uid,
