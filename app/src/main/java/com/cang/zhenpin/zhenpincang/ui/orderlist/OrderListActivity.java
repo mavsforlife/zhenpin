@@ -149,7 +149,12 @@ public class OrderListActivity extends AppCompatActivity implements OrderListCon
 
     @Override
     public void onError() {
-
+        if (mAdapter.isEmpty()) {
+            mLoadingLayout.showError();
+            mSrl.setEnabled(true);
+        } else {
+            mAdapter.showFooterError();
+        }
     }
 
     @Override

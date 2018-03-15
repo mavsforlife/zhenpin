@@ -205,6 +205,10 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
+    public boolean isEmpty() {
+        return mDatas == null || mDatas.size() == 0;
+    }
+
     @Override
     public int getItemCount() {
         return (mDatas == null || mDatas.size() == 0) ? 0 : mDatas.size() + 1;
