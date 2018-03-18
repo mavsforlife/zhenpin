@@ -1,6 +1,7 @@
 package com.cang.zhenpin.zhenpincang.wxapi;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,6 +26,8 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.lang.ref.WeakReference;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -84,7 +87,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 .subscribe(new BaseActivityObserver<WxAccessResult>(this) {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        DialogUtil.showProgressDialog(WXEntryActivity.this);
+                        DialogUtil.showProgressDialog(new WeakReference<Context>(WXEntryActivity.this));
                     }
 
                     @Override

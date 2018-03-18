@@ -28,9 +28,14 @@ public class IntentFlag {
     public static final String NEW_ADDRESS = "new_address";
 
     public static final String ORDER_COUNT = "order_count";
+
     public static final String ORDER_TOTAL_FEE = "order_total_fee";
+
     public static final String ORDER_PIC = "order_pic";
-    public static final String ORDER_IDS = "order_ids";
+
+    public static final String ORDER_CART_IDS = "order_cart_ids";
+
+    public static final String ORDER_ID = "order__id";
 
 
 }

@@ -2,6 +2,8 @@ package com.cang.zhenpin.zhenpincang.base;
 
 import android.app.Application;
 
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
@@ -20,6 +22,10 @@ public class App extends Application {
         super.onCreate();
         sInstance = this;
         registerToWX();
+
+        if (!LeakCanary.isInAnalyzerProcess(this)) {
+            LeakCanary.install(this);
+        }
     }
 
     public static App getsInstance() {

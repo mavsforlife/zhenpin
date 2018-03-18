@@ -28,7 +28,7 @@
             <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/line_video_list"
+                android:background="@color/line_expert"
                 app:layout_scrollFlags="scroll|snap">
 
                 <TextView
@@ -36,6 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/dp_10"
+                    android:textColor="@color/black"
                     android:text="@string/test_source"
                     app:layout_collapseMode="parallax"/>
 

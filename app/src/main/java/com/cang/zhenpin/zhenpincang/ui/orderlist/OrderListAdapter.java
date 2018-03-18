@@ -21,8 +21,10 @@ import com.cang.zhenpin.zhenpincang.network.BaseActivityObserver;
 import com.cang.zhenpin.zhenpincang.network.NetWork;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.ui.cart.util.DecimalUtil;
+import com.cang.zhenpin.zhenpincang.ui.confirmorder.ConfirmOrderActivity;
 import com.cang.zhenpin.zhenpincang.util.DialogUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -135,7 +137,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 .subscribe(new BaseActivityObserver<BaseResult>(mContext) {
                                     @Override
                                     public void onSubscribe(Disposable d) {
-                                        DialogUtil.showProgressDialog(mContext, R.string.please_wait);
+                                        DialogUtil.showProgressDialog(new WeakReference<>(mContext),
+                                                R.string.please_wait);
                                     }
 
                                     @Override
@@ -167,7 +170,12 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 holder.mPay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        mContext.startActivity(ConfirmOrderActivity.createIntent(mContext,
+                                orderProxy.mTotlaCount,
+                                String.valueOf(orderProxy.mTotalFee),
+                                (ArrayList<String>) orderProxy.mPics,
+                                null,
+                                orderProxy.mId));
                     }
                 });
             } else {

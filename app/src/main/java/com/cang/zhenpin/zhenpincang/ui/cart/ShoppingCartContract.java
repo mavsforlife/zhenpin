@@ -28,6 +28,8 @@ public interface ShoppingCartContract {
         void onAddEmpty();
 
         void onGotoAdd();
+
+        void showTipView(String data);
     }
 
     interface Presenter extends BasePresenter {
@@ -37,5 +39,7 @@ public interface ShoppingCartContract {
         void onDelCart(List<CartBrand> data);
 
         void onAddOrder(List<CartBrand> data, String[] cartInfo);
+
+        void getShowTip();
     }
 }

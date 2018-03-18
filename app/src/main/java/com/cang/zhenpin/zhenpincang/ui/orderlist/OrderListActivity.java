@@ -13,8 +13,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cang.zhenpin.zhenpincang.R;
+import com.cang.zhenpin.zhenpincang.event.UpdateOrderListEvent;
 import com.cang.zhenpin.zhenpincang.util.ToastUtil;
 import com.victor.loadinglayout.LoadingLayout;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -36,6 +40,7 @@ public class OrderListActivity extends AppCompatActivity implements OrderListCon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_list);
 
+        EventBus.getDefault().register(this);
         initView();
     }
 
@@ -147,6 +152,12 @@ public class OrderListActivity extends AppCompatActivity implements OrderListCon
         mLoadingLayout.showEmpty();
     }
 
+    @Subscribe
+    public void handleUpdate(UpdateOrderListEvent event) {
+        mSrl.setRefreshing(true);
+        mPresenter.onLoadData(true);
+    }
+
     @Override
     public void onError() {
         if (mAdapter.isEmpty()) {
@@ -173,5 +184,11 @@ public class OrderListActivity extends AppCompatActivity implements OrderListCon
 
     public static Intent createIntent(Context context) {
         return new Intent(context , OrderListActivity.class);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

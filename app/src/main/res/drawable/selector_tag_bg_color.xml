@@ -6,5 +6,5 @@
         >
     </item>
     <item
-        android:drawable="@drawable/bg_tag_selected_false"></item>
+        android:drawable="@drawable/bg_tag_selected_false"/>
 </selector>

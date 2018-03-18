@@ -149,8 +149,25 @@ public class ShoppingCartPresenter implements ShoppingCartContract.Presenter {
                 count,
                 cartInfo[0],
                 (ArrayList<String>) pics,
-                sb.toString()));
+                sb.toString(),
+                null));
 
+    }
+
+    @Override
+    public void getShowTip() {
+        NetWork.getsBaseApi()
+                .getShowTip(1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseObserver<BaseResult<String>>(mView) {
+
+                    @Override
+                    public void onNext(BaseResult<String> result) {
+                        super.onNext(result);
+                        mView.showTipView(result.getData());
+                    }
+                });
     }
 
     private String[] getTotalPrice(List<CartBrand> list) {

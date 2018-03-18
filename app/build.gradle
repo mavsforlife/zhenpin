@@ -8,8 +8,8 @@ android {
         applicationId "com.cang.zhenpin.zhenpincang"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 101
-        versionName "1.0.1"
+        versionCode 102
+        versionName "1.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -46,8 +46,8 @@ dependencies {
     api 'com.squareup.retrofit2:converter-scalars:2.1.0'
     api 'com.squareup.retrofit2:converter-gson:2.3.0'
     api 'com.squareup.retrofit2:retrofit:2.3.0'
-    api 'com.squareup.okhttp3:logging-interceptor:3.9.0'
-    api 'com.google.code.gson:gson:2.8.0'
+    api 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    api 'com.google.code.gson:gson:2.8.2'
     api 'com.hyman:flowlayout-lib:1.1.2'
     //RxJava的依赖包（我使用的最新版本）
     api 'io.reactivex.rxjava2:rxjava:2.0.7'
@@ -61,4 +61,6 @@ dependencies {
     testApi 'junit:junit:4.12'
     api project(':loadinglayout')
     implementation files('libs/alipaySdk-20170922.jar')
+    debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }

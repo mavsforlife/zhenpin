@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,12 +20,14 @@ import com.cang.zhenpin.zhenpincang.R;
 import com.cang.zhenpin.zhenpincang.base.App;
 import com.cang.zhenpin.zhenpincang.base.IntentFlag;
 import com.cang.zhenpin.zhenpincang.event.SaveAndUseAddressEvent;
+import com.cang.zhenpin.zhenpincang.event.UpdateOrderListEvent;
 import com.cang.zhenpin.zhenpincang.event.UpdateShopCartEvent;
 import com.cang.zhenpin.zhenpincang.event.WxPayEvent;
 import com.cang.zhenpin.zhenpincang.model.AddOrder;
 import com.cang.zhenpin.zhenpincang.model.Address;
 import com.cang.zhenpin.zhenpincang.model.AddressList;
 import com.cang.zhenpin.zhenpincang.model.BaseResult;
+import com.cang.zhenpin.zhenpincang.network.ApiException;
 import com.cang.zhenpin.zhenpincang.network.BaseActivityObserver;
 import com.cang.zhenpin.zhenpincang.network.NetWork;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
@@ -49,12 +52,16 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
 
     public static final int PAY_TYPE_WX = 1;
     public static final int PAY_TYPE_ALI = 2;
+
+    public static final int TYPE_CART = 3;
+    public static final int TYPE_ORDER = 4;
     private static final String TAG = ConfirmOrderActivity.class.getSimpleName();
 
     private String mIds;
     private int mCount;
     private String mAddressId;
 
+    private String mOrderId;
     private String mOrderNo;
     private List<Address> mAddresses;
 
@@ -67,8 +74,10 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
     private TextView mTvTotalFee, mTvRealFee;
     private TextView mNoAddress;
     private TextView mSubmit;
+    private TextView mTip;
 
     private int mPayType = PAY_TYPE_WX;
+    private int mAddType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +89,7 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
         initData();
 
         getAddress();
+        showTipView();
     }
 
     private void initView() {
@@ -118,10 +128,13 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
         mSubmit = findViewById(R.id.submit);
         mSubmit.setOnClickListener(this);
 
+        mTip = findViewById(R.id.tip);
     }
 
     private void initData() {
-        mIds = getIntent().getStringExtra(IntentFlag.ORDER_IDS);
+        mOrderId = getIntent().getStringExtra(IntentFlag.ORDER_ID);
+        mAddType = TextUtils.isEmpty(mOrderId) ? TYPE_CART : TYPE_ORDER;
+        mIds = getIntent().getStringExtra(IntentFlag.ORDER_CART_IDS);
         mCount = getIntent().getIntExtra(IntentFlag.ORDER_COUNT, 0);
         String totalFee = getIntent().getStringExtra(IntentFlag.ORDER_TOTAL_FEE);
         ArrayList<String> pics = getIntent().getStringArrayListExtra(IntentFlag.ORDER_PIC);
@@ -135,12 +148,13 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
         mTotalCount.setText(String.format(Locale.US, getString(R.string.total_count), mCount));
     }
 
-    public static Intent createIntent(Context context, int count, String totalFee, ArrayList<String> pics, String ids) {
+    public static Intent createIntent(Context context, int count, String totalFee, ArrayList<String> pics, String ids, String orderId) {
         Intent intent = new Intent(context, ConfirmOrderActivity.class);
         intent.putExtra(IntentFlag.ORDER_COUNT, count);
         intent.putExtra(IntentFlag.ORDER_TOTAL_FEE, totalFee);
         intent.putExtra(IntentFlag.ORDER_PIC, pics);
-        intent.putExtra(IntentFlag.ORDER_IDS, ids);
+        intent.putExtra(IntentFlag.ORDER_CART_IDS, ids);
+        intent.putExtra(IntentFlag.ORDER_ID, orderId);
         return intent;
     }
 
@@ -223,7 +237,12 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
                 mPayType = PAY_TYPE_ALI;
                 break;
             case R.id.submit:
-                addOrder();
+                if (mOrderId != null) {
+                    payFromInvoice();
+                } else {
+                    addOrder();
+                }
+
                 break;
         }
     }
@@ -256,35 +275,16 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
                         mPayType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseActivityObserver<BaseResult<AddOrder>>(this) {
+                .subscribe(mObserver);
 
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        super.onSubscribe(d);
-                        DialogUtil.showProgressDialog(ConfirmOrderActivity.this);
-                    }
+    }
 
-                    @Override
-                    public void onNext(BaseResult<AddOrder> result) {
-                        super.onNext(result);
-                        DialogUtil.dismissProgressDialog();
-                        if (result.getData() == null) {
-                            ToastUtil.showShort(ConfirmOrderActivity.this, "下单失败，请重试");
-                            return;
-                        }
-                        EventBus.getDefault().post(new UpdateShopCartEvent());
-                        mOrderNo = result.getData().getOrderNo();
-
-                        handlePay(result.getData());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        DialogUtil.dismissProgressDialog();
-                    }
-                });
-
+    private void payFromInvoice() {
+        NetWork.getsBaseApi()
+                .payFromInvoice(mOrderId, mAddressId, mPayType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mObserver);
     }
 
     private void handlePay(AddOrder data) {
@@ -294,6 +294,50 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
             PayUtils.getAliPayResult(new WeakReference<>(this), data);
         }
     }
+
+    private BaseActivityObserver<BaseResult<AddOrder>> mObserver = new BaseActivityObserver<BaseResult<AddOrder>>(this) {
+
+        @Override
+        public void onSubscribe(Disposable d) {
+            super.onSubscribe(d);
+            DialogUtil.showProgressDialog(new WeakReference<Context>(ConfirmOrderActivity.this));
+        }
+
+        @Override
+        public void onNext(BaseResult<AddOrder> result) {
+            super.onNext(result);
+            DialogUtil.dismissProgressDialog();
+            if (result.getData() == null) {
+                ToastUtil.showShort(ConfirmOrderActivity.this, R.string.add_order_fail);
+                return;
+            }
+            mOrderNo = result.getData().getOrderNo();
+
+            if (mAddType == TYPE_CART) {
+                EventBus.getDefault().post(new UpdateShopCartEvent());
+            }
+            handlePay(result.getData());
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            super.onError(e);
+            DialogUtil.dismissProgressDialog();
+            if (e instanceof ApiException) {
+                ApiException exception = (ApiException) e;
+                if (exception.getErrorCode() == 2) {
+
+                    if (mAddType == TYPE_CART) {
+                        EventBus.getDefault().post(new UpdateShopCartEvent());
+                    } else if (mAddType == TYPE_ORDER) {
+                        EventBus.getDefault().post(new UpdateOrderListEvent());
+                    }
+                }
+            }
+
+            finish();
+        }
+    };
 
     @Override
     protected void onDestroy() {
@@ -320,11 +364,11 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
                 break;
 
             case AddOrder.WX_ERROR:
-                ToastUtil.showShort(this, "错误，请重试！");
+                ToastUtil.showShort(this, R.string.wx_error);
                 break;
 
             case AddOrder.WX_CANCEL:
-                ToastUtil.showShort(this, "取消支付");
+                ToastUtil.showShort(this, R.string.wx_cancel_pay);
                 break;
         }
     }
@@ -335,17 +379,52 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseActivityObserver<BaseResult>(this) {
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        super.onSubscribe(d);
+                        DialogUtil.showProgressDialog(new WeakReference<Context>(ConfirmOrderActivity.this),
+                                R.string.please_wait_for_check_order_status);
+                    }
+
                     @Override
                     public void onNext(BaseResult baseResult) {
                         super.onNext(baseResult);
+                        DialogUtil.dismissProgressDialog();
                         ToastUtil.showShort(ConfirmOrderActivity.this, baseResult.getMsg());
-                        EventBus.getDefault().post(new UpdateShopCartEvent());
+                        if (mAddType == TYPE_ORDER) {
+                            EventBus.getDefault().post(new UpdateOrderListEvent());
+                        }
                         finish();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        if (mAddType == TYPE_ORDER) {
+                            EventBus.getDefault().post(new UpdateOrderListEvent());
+                        }
+                        DialogUtil.dismissProgressDialog();
+                    }
+                });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    private void showTipView() {
+        NetWork.getsBaseApi()
+                .getShowTip(2)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseActivityObserver<BaseResult<String>>(this) {
+
+                    @Override
+                    public void onNext(BaseResult<String> result) {
+                        super.onNext(result);
+                        mTip.setText(result.getData());
                     }
                 });
     }

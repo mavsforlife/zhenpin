@@ -3,10 +3,14 @@ package com.cang.zhenpin.zhenpincang.ui.confirmorder;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
+import com.cang.zhenpin.zhenpincang.R;
+import com.cang.zhenpin.zhenpincang.base.App;
 import com.cang.zhenpin.zhenpincang.model.AddOrder;
+import com.cang.zhenpin.zhenpincang.util.ToastUtil;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 
 import java.lang.ref.WeakReference;
@@ -31,6 +35,7 @@ public class PayUtils {
     public static final String RESULT_STATUS_SUCCESS = "9000";   // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
     public static final String RESULT_STATUS_LOADING = "8000";   // 判断resultStatus 为非"9000"则代表可能支付失败 "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
     public static final String RESULT_NOT_INSTALLED = "4000";       // 未安装支付宝
+    public static final String RESULT_CANCEL = "6001";       // 未安装支付宝
 
     static PayReq wxPay(AddOrder data) {
         PayReq req = new PayReq();
@@ -46,7 +51,7 @@ public class PayUtils {
 
     static void getAliPayResult(final WeakReference<ConfirmOrderActivity> ref, final AddOrder data) {
 
-        Observable.just(data.getNoncestr())
+        Observable.just(data.getSignOrderStr())
                 .map(new Function<String, Map<String, String>>() {
                     @Override
                     public Map<String, String> apply(String s) throws Exception {
@@ -78,13 +83,15 @@ public class PayUtils {
 
                                 String resultInfo = result.getResult();// 同步返回需要验证的信息
                                 String resultStatus = result.getResultStatus();
+                                Log.d("PayUtils", "resultStatus is " + resultStatus);
                                 // 判断resultStatus 为9000则代表支付成功
                                 if (TextUtils.equals(resultStatus, RESULT_STATUS_SUCCESS) ||
                                         TextUtils.equals(resultStatus, RESULT_STATUS_LOADING)) {
-                                    // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
                                     act.onCheckPaySuccess();
                                 } else if (TextUtils.equals(resultStatus, RESULT_NOT_INSTALLED)) {
-                                    Toast.makeText(act, "你还未安装支付宝！", Toast.LENGTH_SHORT).show();
+                                    ToastUtil.showShort(App.getsInstance(), R.string.ali_pay_not_install);
+                                } else if (TextUtils.equals(resultStatus, RESULT_CANCEL)) {
+                                    ToastUtil.showShort(App.getsInstance(), R.string.ali_pay_cancel);
                                 }
                             }
                         }

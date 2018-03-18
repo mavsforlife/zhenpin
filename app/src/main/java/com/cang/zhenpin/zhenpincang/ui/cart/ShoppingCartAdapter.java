@@ -22,6 +22,7 @@ import com.cang.zhenpin.zhenpincang.ui.cart.widget.AddReduceView;
 import com.cang.zhenpin.zhenpincang.util.DialogUtil;
 import com.cang.zhenpin.zhenpincang.util.ToastUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -184,7 +185,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     }
 
     private void modifyQuantity(final int quantity, final CartBrand cartBrand, final AddReduceView addReduceView) {
-        DialogUtil.showProgressDialog(mContext, "请稍候");
+        DialogUtil.showProgressDialog(new WeakReference<>(mContext), R.string.please_wait);
         NetWork.getsBaseApi()
                 .modifyShoppingCartItem(cartBrand.getMId(), quantity)
                 .subscribeOn(Schedulers.io())

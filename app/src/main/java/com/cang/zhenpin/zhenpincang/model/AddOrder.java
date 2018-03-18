@@ -41,6 +41,9 @@ public class AddOrder {
     @SerializedName("OrderNO")
     private String orderNo;
 
+    @SerializedName("order_str")
+    private String mSignOrderStr;
+
     public String getAppid() {
         return appid;
     }
@@ -103,5 +106,13 @@ public class AddOrder {
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public String getSignOrderStr() {
+        return mSignOrderStr;
+    }
+
+    public void setSignOrderStr(String signOrderStr) {
+        mSignOrderStr = signOrderStr;
     }
 }

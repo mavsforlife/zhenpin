@@ -96,7 +96,7 @@ public class Brand {
     @SerializedName("ISBuy")
     private int mIsBuy;
     @SerializedName("Price")
-    private int mPrice;
+    private double mPrice;
     @SerializedName("Check")
     private String mCheck;
     @SerializedName("IsconDesc")
@@ -297,11 +297,11 @@ public class Brand {
         mIsBuy = isBuy;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return mPrice;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         mPrice = price;
     }
 

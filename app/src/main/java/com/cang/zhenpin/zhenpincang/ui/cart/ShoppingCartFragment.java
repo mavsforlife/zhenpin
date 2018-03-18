@@ -1,6 +1,7 @@
 package com.cang.zhenpin.zhenpincang.ui.cart;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cang.zhenpin.zhenpincang.R;
@@ -26,6 +28,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.w3c.dom.Text;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import static com.cang.zhenpin.zhenpincang.ui.cart.ShoppingCartAdapter.STATUS_BUY;
@@ -47,6 +50,7 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartContra
     private CheckBox mCheckBox;
 
     private TextView mDelete;
+    private LinearLayout mContainer;
 
     private ShoppingCartContract.Presenter mPresenter;
 
@@ -77,6 +81,7 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartContra
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_shopping_cart, container, false);
+        mContainer = v.findViewById(R.id.container);
         mRecyclerView = v.findViewById(R.id.rv_cart);
         mRefreshLayout = v.findViewById(R.id.swipe_refresh_layout);
         mRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
@@ -146,6 +151,10 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartContra
             } else {
                 mCheckBox.setChecked(TextUtils.equals(data[3], "0"));
             }
+
+            if (mContainer.getChildCount() == 1) {
+                mPresenter.getShowTip();
+            }
         }
     }
 
@@ -173,6 +182,13 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartContra
     @Override
     public void onGotoAdd() {
         DialogUtil.dismissProgressDialog();
+    }
+
+    @Override
+    public void showTipView(String data) {
+        TextView tv = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.item_show_tip, mContainer, false);
+        tv.setText(data);
+        mContainer.addView(tv, 0);
     }
 
     @Override
@@ -206,7 +222,12 @@ public class ShoppingCartFragment extends Fragment implements ShoppingCartContra
     public void onClick(View v) {
         if (v.getId() == R.id.charge) {
 
-            DialogUtil.showProgressDialog(getActivity(), "请稍候");
+            if (mRefreshLayout.isRefreshing()) {
+                ToastUtil.showShort(getActivity(), R.string.please_wait);
+                return;
+            }
+
+            DialogUtil.showProgressDialog(new WeakReference<Context>(getActivity()), R.string.please_wait);
             if (mAdapter.getStatus() == STATUS_BUY) {
                 mPresenter.onAddOrder(mAdapter.getData(), mCartInfo);
             } else {

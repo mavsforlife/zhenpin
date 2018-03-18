@@ -18,6 +18,7 @@ import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.ui.newaddress.NewAddressActivity;
 import com.cang.zhenpin.zhenpincang.util.DialogUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
 
@@ -160,7 +161,7 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
                     @Override
                     public void onSubscribe(Disposable d) {
                         super.onSubscribe(d);
-                        DialogUtil.showProgressDialog(mContext, "请稍候");
+                        DialogUtil.showProgressDialog(new WeakReference<>(mContext), R.string.please_wait);
                     }
 
                     @Override
@@ -197,7 +198,7 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
                     @Override
                     public void onSubscribe(Disposable d) {
                         super.onSubscribe(d);
-                        DialogUtil.showProgressDialog(mContext, "请稍候");
+                        DialogUtil.showProgressDialog(new WeakReference<>(mContext), R.string.please_wait);
                     }
 
                     @Override

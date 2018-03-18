@@ -51,6 +51,7 @@ public interface BaseApi {
     String PAY_CLASS = "payclass";
     String TOTAL_FEE = "total_fee";
     String ORDER_NO = "OrderNO";
+    String TYPE = "type";
 
     @GET("index/brandlist")
     Observable<BaseResult<BrandList>> brandList(@Query(PAGE) int page,
@@ -139,4 +140,11 @@ public interface BaseApi {
     @GET("index/chekorder")
     Observable<BaseResult> checkPayStatus(@Query(ORDER_NO) String orderNo);
 
+    @GET("OrderPay/index")
+    Observable<BaseResult<AddOrder>> payFromInvoice(@Query(ID) String id,
+                                                    @Query(ADDRESSID) String addressId,
+                                                    @Query(PAY_CLASS) int payType);
+
+    @GET("index/showtip")
+    Observable<BaseResult<String>> getShowTip(@Query(TYPE) int type);
 }

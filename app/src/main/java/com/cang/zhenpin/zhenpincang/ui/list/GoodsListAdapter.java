@@ -23,6 +23,8 @@ import com.cang.zhenpin.zhenpincang.network.BaseActivityObserver;
 import com.cang.zhenpin.zhenpincang.network.NetWork;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.ui.brand.BrandActivity;
+import com.cang.zhenpin.zhenpincang.util.DialogUtil;
+import com.cang.zhenpin.zhenpincang.util.ShareUtil;
 import com.cang.zhenpin.zhenpincang.util.ToastUtil;
 import com.cang.zhenpin.zhenpincang.widget.EllipsizingTextView;
 import com.cang.zhenpin.zhenpincang.widget.ninegridlayout.ImgGridView;
@@ -33,10 +35,13 @@ import com.zhy.view.flowlayout.TagView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -203,12 +208,21 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 h.mBuy.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        if (!ShareUtil.isShareEnabled()) {
+                            ToastUtil.showShort(mContext, R.string.apply_agency_to_buy);
+                            if (checkPosition[0] >= 0 && checkPosition[0] < h.mTags.getChildCount()) {
+                                ((TagView) h.mTags.getChildAt(checkPosition[0])).setChecked(false);
+                            }
+                            return;
+                        }
+
                         final Brand.Attribute attr = (Brand.Attribute) v.getTag();
                         if (attr == null) {
-                            ToastUtil.showShort(mContext, "请选择尺码类型！");
+                            ToastUtil.showShort(mContext, R.string.please_select_size);
                         } else {
                             if (attr.getMQuantity() == 0) {
-                                ToastUtil.showShort(mContext, "很抱歉，您选择的尺码类型已售罄");
+                                ToastUtil.showShort(mContext, R.string.attr_sold_out);
                             } else {
                                 NetWork.getsBaseApi()
                                         .addToShoppingCart(PreferencesFactory.getUserPref().getId(),
@@ -216,10 +230,19 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
                                         .subscribe(new BaseActivityObserver<BaseResult>(mContext) {
+
+                                            @Override
+                                            public void onSubscribe(Disposable d) {
+                                                super.onSubscribe(d);
+                                                DialogUtil.showProgressDialog(new WeakReference<>(mContext), R.string.please_wait);
+                                            }
+
                                             @Override
                                             public void onNext(BaseResult baseResult) {
                                                 super.onNext(baseResult);
-                                                ToastUtil.showShort(mContext, "您选择的" + attr.getMName() + "已加入购物车");
+                                                DialogUtil.dismissProgressDialog();
+                                                ToastUtil.showShort(mContext,
+                                                        String.format(Locale.US, mContext.getString(R.string.get_into_cart), attr.getMName()));
                                                 int clearPosition = checkPosition[0];
                                                 if (clearPosition >= 0 && clearPosition < h.mTags.getChildCount()) {
                                                     ((TagView)h.mTags.getChildAt(clearPosition)).setChecked(false);
@@ -229,7 +252,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                             @Override
                                             public void onError(Throwable e) {
                                                 super.onError(e);
-                                                ToastUtil.showShort(mContext, "加入购物车失败");
+                                                DialogUtil.dismissProgressDialog();
                                                 int clearPosition = checkPosition[0];
                                                 if (clearPosition >= 0 && clearPosition < h.mTags.getChildCount()) {
                                                     ((TagView)h.mTags.getChildAt(clearPosition)).setChecked(false);

@@ -223,7 +223,7 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
         if (TextUtils.isEmpty(notice) || !TextUtils.isEmpty(mBrandId)) {
             mAppBar.setVisibility(View.GONE);
         } else {
-            mTvNotice.setText(String.format(Locale.getDefault(), getString(R.string.notice_content), notice));
+            mTvNotice.setText(String.format(Locale.getDefault(), getString(R.string.notice_content), notice.trim()));
             mAppBar.setVisibility(View.VISIBLE);
         }
     }

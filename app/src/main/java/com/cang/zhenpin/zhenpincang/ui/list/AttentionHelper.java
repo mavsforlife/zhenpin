@@ -1,6 +1,7 @@
 package com.cang.zhenpin.zhenpincang.ui.list;
 
 import android.content.Context;
+import android.content.MutableContextWrapper;
 import android.text.TextUtils;
 
 import com.cang.zhenpin.zhenpincang.model.BaseResult;
@@ -11,6 +12,8 @@ import com.cang.zhenpin.zhenpincang.network.NetWork;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.util.DialogUtil;
 import com.cang.zhenpin.zhenpincang.util.ToastUtil;
+
+import java.lang.ref.WeakReference;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -38,7 +41,7 @@ public class AttentionHelper {
                         @Override
                         public void onSubscribe(Disposable d) {
                             super.onSubscribe(d);
-                            DialogUtil.showProgressDialog(context);
+                            DialogUtil.showProgressDialog(new WeakReference<>(context));
                         }
 
                         @Override

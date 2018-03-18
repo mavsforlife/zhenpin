@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/dp_4"
-    android:textColor="@color/blue"
-    android:paddingStart="@dimen/dp_2"
-    android:paddingEnd="@dimen/dp_2"
+    android:textColor="@color/color_brand_title"
+    android:paddingStart="@dimen/dp_4"
+    android:paddingEnd="@dimen/dp_4"
     android:background="@drawable/selector_tag_bg_color"/>

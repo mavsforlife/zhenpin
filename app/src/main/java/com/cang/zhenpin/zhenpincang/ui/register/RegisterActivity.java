@@ -31,6 +31,7 @@ import com.cang.zhenpin.zhenpincang.util.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.ref.WeakReference;
 import java.util.Locale;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -177,7 +178,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onSubscribe(Disposable d) {
                         super.onSubscribe(d);
-                        DialogUtil.showProgressDialog(RegisterActivity.this);
+                        DialogUtil.showProgressDialog(new WeakReference<Context>(RegisterActivity.this));
                     }
 
                     @Override

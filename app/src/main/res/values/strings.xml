@@ -110,7 +110,18 @@
     <string name="pay_price">结算价:¥%s</string>
     <string name="cancel_order">取消订单</string>
     <string name="please_wait">请稍候</string>
+    <string name="please_wait_for_check_order_status">请稍候，支付结果确认中</string>
     <string name="order_list">我的订单</string>
     <string name="go_pay">去付款</string>
     <string name="order_info">共%1d件商品 合计¥%2s元</string>
+    <string name="buy">购买</string>
+    <string name="get_into_cart">您选择的 %s 已加入购物车</string>
+    <string name="attr_sold_out">很抱歉，您选择的尺码类型已售罄</string>
+    <string name="please_select_size">请选择尺码类型！</string>
+    <string name="wx_cancel_pay">取消支付</string>
+    <string name="wx_error">错误，请重试！</string>
+    <string name="add_order_fail">下单失败，请重试</string>
+    <string name="ali_pay_cancel">取消了支付</string>
+    <string name="ali_pay_not_install">你还未安装支付宝！</string>
+    <string name="apply_agency_to_buy">您还不是代理用户，请申请成为代理以后再购买</string>
 </resources>

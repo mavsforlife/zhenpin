@@ -28,9 +28,7 @@ public class AddReduceView extends LinearLayout implements View.OnClickListener,
 
     private static final String TAG = AddReduceView.class.getSimpleName();
 
-    private TextView mAdd, mReduce;
     private BackEditText mEtCount;
-    private LinearLayout mLinearLayout;
 
     private int mCount = 1;
 
@@ -60,15 +58,15 @@ public class AddReduceView extends LinearLayout implements View.OnClickListener,
     }
 
     private void init() {
-        mLinearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_add_reduce_widget, this, false);
-        mAdd = mLinearLayout.findViewById(R.id.add);
-        mReduce = mLinearLayout.findViewById(R.id.reduce);
-        mEtCount = mLinearLayout.findViewById(R.id.count);
+        LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.item_add_reduce_widget, this, false);
+        TextView add = linearLayout.findViewById(R.id.add);
+        TextView reduce = linearLayout.findViewById(R.id.reduce);
+        mEtCount = linearLayout.findViewById(R.id.count);
         mEtCount.setText(String.valueOf(mCount));
-        addView(mLinearLayout);
+        addView(linearLayout);
 
-        mAdd.setOnClickListener(this);
-        mReduce.setOnClickListener(this);
+        add.setOnClickListener(this);
+        reduce.setOnClickListener(this);
         mEtCount.addTextChangedListener(this);
         mEtCount.setOnEditorActionListener(this);
         mEtCount.setBackListener(this);
@@ -80,13 +78,11 @@ public class AddReduceView extends LinearLayout implements View.OnClickListener,
         if (v.getId() == R.id.add) {
             if (mTempCount < mMaxCount - 1) {
                 mTempCount++;
-//                mEtCount.setText(String.valueOf(mCount));
                 mOnCountChangeListener.onCountChange(mTempCount);
             }
         } else if (v.getId() == R.id.reduce) {
             if (mCount > 1) {
                 mTempCount--;
-//                mEtCount.setText(String.valueOf(mCount));
                 mOnCountChangeListener.onCountChange(mTempCount);
             }
         }
@@ -129,8 +125,9 @@ public class AddReduceView extends LinearLayout implements View.OnClickListener,
         }
 
         if (Integer.parseInt(s.toString()) > mMaxCount) {
-            mEtCount.setText(String.valueOf(mMaxCount));
-            mEtCount.setSelection(s.length());
+            String maxCount = String.valueOf(mMaxCount);
+            mEtCount.setText(maxCount);
+            mEtCount.setSelection(maxCount.length());
         }
 
     }
@@ -142,6 +139,9 @@ public class AddReduceView extends LinearLayout implements View.OnClickListener,
             InputMethodManager imm = (InputMethodManager) v
                     .getContext().getSystemService(
                             Context.INPUT_METHOD_SERVICE);
+            if (imm == null) {
+                return false;
+            }
             if (imm.isActive()) {
                 imm.hideSoftInputFromWindow(
                         v.getApplicationWindowToken(), 0);

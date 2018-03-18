@@ -10,6 +10,8 @@ import android.support.v7.app.AlertDialog;
 import com.cang.zhenpin.zhenpincang.R;
 import com.cang.zhenpin.zhenpincang.base.App;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Created by victor on 2017/11/26.
  * Email: wwmdirk@gmail.com
@@ -36,29 +38,39 @@ public class DialogUtil {
 
     private static ProgressDialog mProgressDialog;
 
-    public static void showProgressDialog(Context context, @StringRes int resId) {
-        showProgressDialog(context, context.getString(resId));
+    public static void showProgressDialog(WeakReference<Context> ref, @StringRes int resId) {
+        Context context = ref.get();
+        if (context != null) {
+            showProgressDialog(ref, context.getString(resId));
+        }
     }
 
-    public static void showProgressDialog(Context context, String string) {
-        mProgressDialog = new ProgressDialog(context);
-        mProgressDialog.setMessage(string);
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.show();
+    public static void showProgressDialog(WeakReference<Context> ref, String string) {
+        Context context = ref.get();
+        if (context != null) {
+            mProgressDialog = new ProgressDialog(context);
+            mProgressDialog.setMessage(string);
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+        }
     }
 
-    public static void showProgressDialog(Context context) {
-        mProgressDialog = new ProgressDialog(context);
-        mProgressDialog.setMessage(context.getString(R.string.loading));
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.show();
+    public static void showProgressDialog(WeakReference<Context> ref) {
+        Context context = ref.get();
+        if (context != null) {
+            mProgressDialog = new ProgressDialog(context);
+            mProgressDialog.setMessage(context.getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+        }
     }
 
     public static void dismissProgressDialog() {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
+            mProgressDialog = null;
         }
     }
 }

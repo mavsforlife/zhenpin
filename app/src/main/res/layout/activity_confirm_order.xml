@@ -6,14 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context="com.cang.zhenpin.zhenpincang.ui.confirmorder.ConfirmOrderActivity">
 
     <include layout="@layout/layout_toolbar"/>
-
-    <!--<View-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/dp_5"-->
-    <!--android:background="@color/line_expert"/>-->
 
     <com.victor.loadinglayout.LoadingLayout
         android:id="@id/loading_layout"
@@ -217,13 +213,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/yellow_tip"
-                android:gravity="center"
-                android:padding="@dimen/dp_8"
-                android:text="@string/tip_pay_in_30_minute"/>
+            <include layout="@layout/item_show_tip"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -237,7 +227,6 @@
                     android:layout_weight="1"
                     android:gravity="end|center"
                     android:padding="@dimen/dp_10"
-                    android:text="实付款：¥400.00"
                     android:textColor="@color/red"/>
 
                 <TextView

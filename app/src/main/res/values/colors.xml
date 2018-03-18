@@ -15,7 +15,7 @@
     <color name="orange">#F15A24</color>
     <color name="dark_orange">#FFBB26</color>
     <color name="yellow">#F79D34</color>
-    <color name="yellow_tip">#C1FFCC</color>
+    <color name="yellow_tip">#FAFAFA</color>
     <color name="red">#eb1c23</color>
     <color name="red_setting">#FFE76162</color>
     <color name="circle_gray">#81848A</color>
@@ -43,7 +43,10 @@
     <color name="order_refund">#808080</color>
     <color name="order_un_payed">#eb1c23</color>
 
+
     <!--background color-->
+    <color name="bg_tags">#F0F0F0</color>
+    <color name="bg_tag_item_true">#FF8001</color>
     <color name="line">#F2F2F2</color>
     <color name="line_expert">#e6e6e6</color>
     <color name="line_video_list">#E3E3E3</color>
@@ -109,4 +112,5 @@
     <color name="to_day">#3ec599</color>
     <color name="month_num_line">#f4f4f4</color>
     <color name="color_brand_title">#5b6986</color>
+    <color name="font_buy_tip">#7B6969</color>
 </resources>

@@ -2,5 +2,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <solid
-        android:color="@color/orange"/>
+        android:color="@color/bg_tag_item_true"/>
 </shape>

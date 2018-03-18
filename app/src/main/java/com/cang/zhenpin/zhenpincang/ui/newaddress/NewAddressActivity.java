@@ -1,5 +1,6 @@
 package com.cang.zhenpin.zhenpincang.ui.newaddress;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -62,10 +63,10 @@ public class NewAddressActivity extends AppCompatActivity implements View.OnClic
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView mTvBar = findViewById(R.id.tv_bar);
-        mTvBar.setText(R.string.address_management);
+        mTvBar.setText(R.string.add_address);
 
         mAdd = findViewById(R.id.tv_edit);
-        mAdd.setText(R.string.add_address);
+        mAdd.setText(R.string.add);
         mAdd.setVisibility(View.VISIBLE);
         mAdd.setOnClickListener(this);
 
@@ -165,6 +166,7 @@ public class NewAddressActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    private ProgressDialog mProgressDialog;
     private void addOrModify(Map<String, String> quereMap) {
         NetWork.getsBaseApi()
                 .modifyOrAddAddress(quereMap)
@@ -175,14 +177,16 @@ public class NewAddressActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onSubscribe(Disposable d) {
                         super.onSubscribe(d);
-                        DialogUtil.showProgressDialog(NewAddressActivity.this,
-                                "请稍候");
+                        mProgressDialog = ProgressDialog.show(NewAddressActivity.this, "", getString(R.string.please_wait),
+                                true, false);
+//                        DialogUtil.showProgressDialog(NewAddressActivity.this,
+//                                "请稍候");
                     }
 
                     @Override
                     public void onNext(BaseResult<Address> result) {
                         super.onNext(result);
-                        DialogUtil.dismissProgressDialog();
+                        mProgressDialog.dismiss();
                         EventBus.getDefault().post(new UpdateAddressEvent(mTypeExtra, mPositionExtra, result.getData()));
                         finish();
                     }
@@ -190,8 +194,14 @@ public class NewAddressActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        DialogUtil.dismissProgressDialog();
+                        mProgressDialog.dismiss();
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        DialogUtil.dismissProgressDialog();
+        super.onDestroy();
     }
 }
