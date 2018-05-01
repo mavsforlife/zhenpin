@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import com.cang.zhenpin.zhenpincang.base.BasePresenter;
 import com.cang.zhenpin.zhenpincang.base.BaseView;
 import com.cang.zhenpin.zhenpincang.model.Brand;
+import com.cang.zhenpin.zhenpincang.model.BrandForFuckList;
 
 import java.io.File;
 import java.util.List;
@@ -39,6 +40,8 @@ public interface GoodsListContract {
         void showHideProgress(boolean isShow);
 
         void setUpShotView(List<String> list, List<Integer> params, String desc, String fileName);
+
+        void addFuckList(BrandForFuckList fuckList);
     }
 
     interface Presenter extends BasePresenter {

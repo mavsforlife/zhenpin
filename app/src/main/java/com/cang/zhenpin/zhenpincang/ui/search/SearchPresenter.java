@@ -77,6 +77,7 @@ public class SearchPresenter implements SearchContract.Presenter {
         }
         if (isRefresh) {
             mCurrentPage = 1;
+            mList.clear();
         }
         NetWork.getsBaseApi()
                 .brandList(mCurrentPage, keyword, null, mUid)

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.cang.zhenpin.zhenpincang.R;
 import com.cang.zhenpin.zhenpincang.glide.GlideApp;
 import com.cang.zhenpin.zhenpincang.model.Brand;
+import com.cang.zhenpin.zhenpincang.model.BrandForFuckList;
 import com.cang.zhenpin.zhenpincang.model.UserInfo;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.ui.register.RegisterActivity;
@@ -32,6 +33,7 @@ import com.cang.zhenpin.zhenpincang.widget.TopDividerItemDecoration;
 import com.victor.loadinglayout.LoadingLayout;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -72,6 +74,7 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
 
     private boolean mHasMoreData = true; //是否加载更多数据
     private boolean mIsLoading;         //是否在加载中
+    private boolean mHasFuckBrand;      //是否有品牌列表
     private Intent mShareIntent;
     private int mPos;
 
@@ -133,7 +136,7 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
         });
         mLoadingLayout.showContent();
         mPresenter = new GoodsListPresenter(getActivity(), this,
-                mBrandId, mIsAttention);
+                mBrandId, mIsAttention, !TextUtils.isEmpty(mBrandId));
         mPresenter.onLoadData(true);
         initShotView(v);
         return v;
@@ -189,7 +192,10 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
         }
         mLoadingLayout.showContent();
         if (isRefresh) {
-            mAdapter.setData(list);
+            List<Object> newList = new ArrayList<>();
+            newList.add(new Object());
+            newList.addAll(list);
+            mAdapter.setData(newList);
         } else {
             mAdapter.addData(list);
         }
@@ -272,6 +278,16 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
         } else {
             dismissProgressDialog();
         }
+    }
+
+    @Override
+    public void addFuckList(BrandForFuckList fuckList) {
+        if (fuckList == null || fuckList.mList == null) {
+            mHasFuckBrand = false;
+            return;
+        }
+        mHasFuckBrand = true;
+        mAdapter.addFuckBrand(fuckList);
     }
 
     @Override
@@ -367,7 +383,7 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
             return;
         }
         showShareDialog();
-        mPos = position;
+        mPos = mHasFuckBrand ? position - 2 : position - 1;
     }
 
     private void showShareTip() {

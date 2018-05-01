@@ -113,6 +113,8 @@
             android:exported="false"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:name=".ui.express.ExpressActivity">
+        </activity>
     </application>
 
 </manifest>

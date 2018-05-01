@@ -6,11 +6,14 @@ import com.cang.zhenpin.zhenpincang.model.Address;
 import com.cang.zhenpin.zhenpincang.model.AddressList;
 import com.cang.zhenpin.zhenpincang.model.AppInfoModel;
 import com.cang.zhenpin.zhenpincang.model.BaseResult;
+import com.cang.zhenpin.zhenpincang.model.BrandForFuck;
+import com.cang.zhenpin.zhenpincang.model.BrandForFuckList;
 import com.cang.zhenpin.zhenpincang.model.BrandList;
 import com.cang.zhenpin.zhenpincang.model.CartBrandList;
 import com.cang.zhenpin.zhenpincang.model.OrderModel;
 import com.cang.zhenpin.zhenpincang.model.UserInfo;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -147,4 +150,8 @@ public interface BaseApi {
 
     @GET("index/showtip")
     Observable<BaseResult<String>> getShowTip(@Query(TYPE) int type);
+
+    @GET("index/rebrand")
+    Observable<BaseResult<BrandForFuckList>> getFuckList();
+
 }

@@ -32,6 +32,7 @@ import com.cang.zhenpin.zhenpincang.widget.TopDividerItemDecoration;
 import com.victor.loadinglayout.LoadingLayout;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -159,7 +160,9 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         }
         mLoadingLayout.showContent();
         if (isRefresh) {
-            mAdapter.setData(list);
+            List<Object> newList = new ArrayList<>();
+            newList.addAll(list);
+            mAdapter.setData(newList);
         } else {
             mAdapter.addData(list);
         }

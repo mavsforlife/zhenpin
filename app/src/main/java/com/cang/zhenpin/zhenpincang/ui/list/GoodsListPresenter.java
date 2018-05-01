@@ -9,6 +9,8 @@ import com.cang.zhenpin.zhenpincang.R;
 import com.cang.zhenpin.zhenpincang.event.RefreshLoginEvent;
 import com.cang.zhenpin.zhenpincang.model.BaseResult;
 import com.cang.zhenpin.zhenpincang.model.Brand;
+import com.cang.zhenpin.zhenpincang.model.BrandForFuck;
+import com.cang.zhenpin.zhenpincang.model.BrandForFuckList;
 import com.cang.zhenpin.zhenpincang.model.BrandList;
 import com.cang.zhenpin.zhenpincang.model.UserInfo;
 import com.cang.zhenpin.zhenpincang.network.BaseObserver;
@@ -48,15 +50,17 @@ public class GoodsListPresenter implements GoodsListContract.Presenter {
 
     private String mBrandId;
     private boolean mIsAttention;
+    private boolean mIsBrand;
     private int mUId;
 
     public GoodsListPresenter(Context context, GoodsListContract.View view,
-                              String brandId, boolean isAttention) {
+                              String brandId, boolean isAttention, boolean isBrand) {
         mContext = context;
         mView = view;
         mCurrPage = 1;
         mBrandId = brandId;
         mIsAttention = isAttention;
+        mIsBrand = isBrand;
         mList = new ArrayList<>();
         mFiles = new ArrayList<>();
         mUId = PreferencesFactory.getUserPref().getId();
@@ -90,6 +94,9 @@ public class GoodsListPresenter implements GoodsListContract.Presenter {
     }
 
     private void getBaseBrandList(final boolean isRefresh) {
+        if (isRefresh) {
+            mList.clear();
+        }
         NetWork.getsBaseApi()
                 .brandList(mCurrPage, null, mBrandId, mUId)
                 .subscribeOn(Schedulers.io())
@@ -127,6 +134,10 @@ public class GoodsListPresenter implements GoodsListContract.Presenter {
                             mCurrPage = data.getPageNow();
                             mPageAll = data.getPageAll();
                             mView.hasMoreData(mPageAll > mCurrPage);
+                        }
+
+                        if (isRefresh && !mIsBrand) {
+                            getFuckList();
                         }
                     }
 
@@ -185,6 +196,27 @@ public class GoodsListPresenter implements GoodsListContract.Presenter {
                         super.onComplete();
                         mCurrPage++;
                         mView.setIsLoading(false);
+                    }
+                });
+    }
+
+    private void getFuckList() {
+        NetWork.getsBaseApi()
+                .getFuckList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseObserver<BaseResult<BrandForFuckList>>(mView) {
+                    @Override
+                    public void onNext(BaseResult<BrandForFuckList> result) {
+                        super.onNext(result);
+                        BrandForFuckList fuckList = result.getData();
+                        mView.addFuckList(fuckList);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        Log.d("fuck", "error");
                     }
                 });
     }
