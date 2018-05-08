@@ -130,8 +130,7 @@ public class SearchPresenter implements SearchContract.Presenter {
     }
 
     @Override
-    public void onShareNormal(int position) {
-        final Brand brand = mList.get(position);
+    public void onShareNormal(final Brand brand) {
         Observable.fromIterable(brand.getPicPath())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -174,8 +173,7 @@ public class SearchPresenter implements SearchContract.Presenter {
     }
 
     @Override
-    public void onShareCompose(int position) {
-        final Brand brand = mList.get(position);
+    public void onShareCompose(final Brand brand) {
         final List<String> urlList;
         if (brand.getPicPath().size() >= 4) {
             urlList = brand.getPicPath().subList(0, 4);

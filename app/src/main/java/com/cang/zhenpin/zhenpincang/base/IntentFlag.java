@@ -37,5 +37,7 @@ public class IntentFlag {
 
     public static final String ORDER_ID = "order__id";
 
+    public static final String ORDER_NO = "order_no";
+
 
 }

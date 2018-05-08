@@ -6,12 +6,13 @@ import com.cang.zhenpin.zhenpincang.model.Address;
 import com.cang.zhenpin.zhenpincang.model.AddressList;
 import com.cang.zhenpin.zhenpincang.model.AppInfoModel;
 import com.cang.zhenpin.zhenpincang.model.BaseResult;
-import com.cang.zhenpin.zhenpincang.model.BrandForFuck;
 import com.cang.zhenpin.zhenpincang.model.BrandForFuckList;
 import com.cang.zhenpin.zhenpincang.model.BrandList;
 import com.cang.zhenpin.zhenpincang.model.CartBrandList;
+import com.cang.zhenpin.zhenpincang.model.OrderDetail;
 import com.cang.zhenpin.zhenpincang.model.OrderModel;
 import com.cang.zhenpin.zhenpincang.model.UserInfo;
+import com.victor.addresspicker.model.ProvinceModel;
 
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,7 @@ public interface BaseApi {
     String TOTAL_FEE = "total_fee";
     String ORDER_NO = "OrderNO";
     String TYPE = "type";
+    String CONTENT = "Content";
 
     @GET("index/brandlist")
     Observable<BaseResult<BrandList>> brandList(@Query(PAGE) int page,
@@ -95,7 +97,8 @@ public interface BaseApi {
     @GET("index/CartAdd")
     Observable<BaseResult> addToShoppingCart(@Query(UID) int uid,
                                              @Query(AID) int aid,
-                                             @Query(QUANTITY) int quantity);
+                                             @Query(QUANTITY) int quantity,
+                                             @Query(CONTENT) String tip);
 
     @GET("index/CartDel")
     Observable<BaseResult> delFromShoppingCart(@Query(UID) int uid,
@@ -153,5 +156,11 @@ public interface BaseApi {
 
     @GET("index/rebrand")
     Observable<BaseResult<BrandForFuckList>> getFuckList();
+
+    @GET("index/provincecitylist")
+    Observable<BaseResult<List<ProvinceModel>>> getProvinceList();
+
+    @GET("order/Detail")
+    Observable<BaseResult<OrderDetail>> getOrderDetail(@Query(ORDER_NO) String orderNo);
 
 }

@@ -63,4 +63,5 @@ dependencies {
     implementation files('libs/alipaySdk-20170922.jar')
     debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    compile project(path: ':addresspicker')
 }

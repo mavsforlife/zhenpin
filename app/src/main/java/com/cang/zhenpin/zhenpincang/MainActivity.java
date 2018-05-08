@@ -3,15 +3,12 @@ package com.cang.zhenpin.zhenpincang;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,29 +20,26 @@ import com.cang.zhenpin.zhenpincang.event.RefreshLoginEvent;
 import com.cang.zhenpin.zhenpincang.model.BaseResult;
 import com.cang.zhenpin.zhenpincang.model.UserInfo;
 import com.cang.zhenpin.zhenpincang.network.BaseActivityObserver;
-import com.cang.zhenpin.zhenpincang.network.BaseObserver;
+import com.cang.zhenpin.zhenpincang.network.BaseActivitySlienceObserver;
 import com.cang.zhenpin.zhenpincang.network.NetWork;
 import com.cang.zhenpin.zhenpincang.network.download.UpdateHelper;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.pref.UserPreferences;
-import com.cang.zhenpin.zhenpincang.ui.about.AboutUsFragment;
 import com.cang.zhenpin.zhenpincang.ui.cart.ShoppingCartFragment;
 import com.cang.zhenpin.zhenpincang.ui.list.GoodsListFragment;
 import com.cang.zhenpin.zhenpincang.ui.login.LoginActivity;
 import com.cang.zhenpin.zhenpincang.ui.search.SearchActivity;
 import com.cang.zhenpin.zhenpincang.ui.user.UserFragment;
 import com.cang.zhenpin.zhenpincang.util.ToastUtil;
+import com.victor.addresspicker.model.ProvinceModel;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ShoppingCartFragment.OnStatusEndListener {
@@ -84,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initData();
         ensureUserInfo();
         getUpdateInfo();
+        getProvinceList();
     }
 
     private void initView() {
@@ -260,5 +255,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onEditDone() {
         mIsEdit = false;
         mTvEdit.setText(R.string.edit);
+    }
+
+    private void getProvinceList() {
+        NetWork.getsBaseApi()
+                .getProvinceList()
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new BaseActivitySlienceObserver<BaseResult<List<ProvinceModel>>>(this) {
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        super.onSubscribe(d);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(BaseResult<List<ProvinceModel>> listBaseResult) {
+                        super.onNext(listBaseResult);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        super.onComplete();
+                    }
+                });
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cang.zhenpin.zhenpincang.ui.orderdetail.OrderDetailActivity">
+
+    <include layout="@layout/layout_toolbar"/>
+
+    <com.victor.loadinglayout.LoadingLayout
+        android:id="@+id/loading_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_order_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.victor.loadinglayout.LoadingLayout>
+</LinearLayout>

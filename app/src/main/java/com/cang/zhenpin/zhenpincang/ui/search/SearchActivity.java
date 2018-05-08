@@ -302,20 +302,20 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         });
     }
 
-    private void showShareDialog() {
+    private void showShareDialog(final Brand brand) {
         AlertDialog.Builder shareDialog = DialogUtil.showShareDialog(this);
         shareDialog
                 .setNegativeButton(R.string.normal_share, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mPresenter.onShareNormal(mPos);
+                        mPresenter.onShareNormal(brand);
                         dialog.dismiss();
                     }
                 })
                 .setPositiveButton(R.string.compose_share, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mPresenter.onShareCompose(mPos);
+                        mPresenter.onShareCompose(brand);
                         dialog.dismiss();
 
                     }
@@ -331,13 +331,13 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     }
 
     @Override
-    public void onShare(int position) {
+    public void onShare(Brand brand) {
         if (!ShareUtil.isShareEnabled()) {
             showShareTip();
             return;
         }
-        showShareDialog();
-        mPos = position;
+        showShareDialog(brand);
+//        mPos = position;
     }
 
     private void showShareTip() {

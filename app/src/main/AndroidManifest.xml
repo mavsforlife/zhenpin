@@ -115,6 +115,8 @@
             android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".ui.express.ExpressActivity">
         </activity>
+        <activity android:name=".ui.orderdetail.OrderDetailActivity">
+        </activity>
     </application>
 
 </manifest>

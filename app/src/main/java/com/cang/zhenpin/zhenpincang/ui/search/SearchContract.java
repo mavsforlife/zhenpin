@@ -43,9 +43,9 @@ public interface SearchContract {
 
         void onLoadData(String keyword, boolean isRefresh);
 
-        void onShareNormal(int position);
+        void onShareNormal(Brand brand);
 
-        void onShareCompose(int position);
+        void onShareCompose(Brand brand);
 
         void onShotToFile(LinearLayout ll, String desc, String fileName);
 

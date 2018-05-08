@@ -22,6 +22,7 @@ import com.cang.zhenpin.zhenpincang.network.NetWork;
 import com.cang.zhenpin.zhenpincang.pref.PreferencesFactory;
 import com.cang.zhenpin.zhenpincang.ui.cart.util.DecimalUtil;
 import com.cang.zhenpin.zhenpincang.ui.confirmorder.ConfirmOrderActivity;
+import com.cang.zhenpin.zhenpincang.ui.orderdetail.OrderDetailActivity;
 import com.cang.zhenpin.zhenpincang.util.DialogUtil;
 
 import java.lang.ref.WeakReference;
@@ -85,16 +86,22 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void bindOrderHeader(OrderHeader holder) {
-        Object obj = mDatas.get(holder.getAdapterPosition());
+        final Object obj = mDatas.get(holder.getAdapterPosition());
         if (obj instanceof String) {
             holder.mOrderNo.setText(String.format(Locale.US, mContext.getString(R.string.order_no), obj.toString()));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onGoToOrderDetailActivity(obj.toString());
+                }
+            });
         }
     }
 
     private void bindOrderItem(ItemViewHolder holder) {
         Object object = mDatas.get(holder.getAdapterPosition());
         if (object instanceof Order) {
-            Order order = (Order) object;
+            final Order order = (Order) object;
 
             GlideApp.with(mContext)
                     .load(order.getPicPath())
@@ -108,6 +115,12 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     4, price.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             holder.mPrice.setText(ss);
             holder.mSize.setText(String.format(Locale.US, mContext.getString(R.string.size), order.getAttrName()));
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onGoToOrderDetailActivity(order.mOrderNo);
+                }
+            });
         }
     }
 
@@ -183,6 +196,12 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 holder.mCancel.setOnClickListener(null);
                 holder.mPay.setVisibility(View.GONE);
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onGoToOrderDetailActivity(orderProxy.mOrderNo);
+                }
+            });
         }
     }
 
@@ -331,6 +350,10 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         void onRetry();
 
         void onEmpty();
+    }
+
+    private void onGoToOrderDetailActivity(String orderNo) {
+        mContext.startActivity(OrderDetailActivity.createIntent(mContext, orderNo));
     }
 
 }

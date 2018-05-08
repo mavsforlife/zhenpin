@@ -134,3 +134,11 @@
 -keep class com.ut.device.** { *;}
 -dontwarn android.net.**
 -keep class android.net.SSLCertificateSocketFactory{*;}
+
+#litepal
+-keep class org.litepal.** {
+    *;
+}
+-keep class * extends org.litepal.crud.DataSupport {
+    *;
+}

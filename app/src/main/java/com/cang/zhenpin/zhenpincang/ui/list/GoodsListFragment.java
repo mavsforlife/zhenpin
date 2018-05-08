@@ -348,20 +348,20 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
         });
     }
 
-    private void showShareDialog() {
+    private void showShareDialog(final  Brand brand) {
         AlertDialog.Builder shareDialog = DialogUtil.showShareDialog(getActivity());
         shareDialog
                 .setNegativeButton(R.string.normal_share, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mPresenter.onShareNormal(mPos);
+                        mPresenter.onShareNormal(brand);
                         dialog.dismiss();
                     }
                 })
                 .setPositiveButton(R.string.compose_share, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mPresenter.onShareCompose(mPos);
+                        mPresenter.onShareCompose(brand);
                         dialog.dismiss();
 
                     }
@@ -377,13 +377,13 @@ public class GoodsListFragment extends Fragment implements GoodsListContract.Vie
     }
 
     @Override
-    public void onShare(int position) {
+    public void onShare(Brand brand) {
         if (!ShareUtil.isShareEnabled()) {
             showShareTip();
             return;
         }
-        showShareDialog();
-        mPos = mHasFuckBrand ? position - 2 : position - 1;
+        showShareDialog(brand);
+//        mPos = mHasFuckBrand ? position - 2 : position - 1;
     }
 
     private void showShareTip() {

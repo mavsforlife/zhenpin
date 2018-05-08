@@ -27,18 +27,20 @@ public class OrderListUtils {
 
             if (orderParent.getOrderList() != null && orderParent.getOrderList().size() > 0) {
 
-                list.add(orderParent.getOrderNO());
+                String orderNo = orderParent.getOrderNO();
+                list.add(orderNo);
 
                 OrderProxy orderProxy = new OrderProxy();
                 orderProxy.mId = orderParent.getId();
                 orderProxy.mStatus = orderParent.getStatus();
                 orderProxy.mStatusName = orderParent.getStatusName();
                 orderProxy.mTotalFee = orderParent.getTotalFee();
-//                orderProxy.mTotlaCount = orderParent.getGoodsCount();
                 orderProxy.mTotlaCount = orderParent.getOrderList().size();
+                orderProxy.mOrderNo = orderNo;
                 orderProxy.mPics = new ArrayList<>();
 
                 for (Order order : orderParent.getOrderList()) {
+                    order.mOrderNo = orderNo;
                     list.add(order);
                     orderProxy.mPics.add(order.getPicPath());
 

@@ -105,7 +105,7 @@
     <string name="save_and_quit">保存并推出</string>
     <string name="save_and_use">保存并使用</string>
     <string name="click_add_address">没有地址，请点击添加地址</string>
-    <string name="order_no">订单号:%s</string>
+    <string name="order_no">订单号：%s</string>
     <string name="size">尺码:%s</string>
     <string name="pay_price">结算价:¥%s</string>
     <string name="cancel_order">取消订单</string>
@@ -124,4 +124,11 @@
     <string name="ali_pay_cancel">取消了支付</string>
     <string name="ali_pay_not_install">你还未安装支付宝！</string>
     <string name="apply_agency_to_buy">您还不是代理用户，请申请成为代理以后再购买</string>
+    <string name="confirm_add_to_shopping_cart">确认加入购物车？</string>
+    <string name="hint_tip_to_shopping_cart">请输入商品备注信息</string>
+    <string name="add_order_time">下单时间：%s</string>
+    <string name="goods_price">商品金额：%s</string>
+    <string name="remarks">备注：%s</string>
+    <string name="order_detail">订单详情</string>
+    <string name="remark_null">暂无</string>
 </resources>

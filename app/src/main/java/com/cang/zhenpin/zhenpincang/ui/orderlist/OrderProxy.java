@@ -9,6 +9,7 @@ import java.util.List;
 
 public class OrderProxy {
 
+    public String mOrderNo;
     public double mTotalFee;
     public int mTotlaCount;
     public int mStatus;

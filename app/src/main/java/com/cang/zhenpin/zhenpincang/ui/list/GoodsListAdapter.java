@@ -1,8 +1,10 @@
 package com.cang.zhenpin.zhenpincang.ui.list;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -38,6 +41,7 @@ import com.zhy.view.flowlayout.TagFlowLayout;
 import com.zhy.view.flowlayout.TagView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.litepal.crud.DataSupport;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -175,7 +179,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 h.mTvShare.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mListener.onShare(h.getAdapterPosition());
+                        mListener.onShare(brand);
                     }
                 });
                 h.mIvAttention.setSelected(brand.getIsAttention() == Brand.ATTENTION);
@@ -216,6 +220,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         public View getView(FlowLayout parent, int position, Brand.Attribute attribute) {
                             TextView tv = (TextView) mLayoutInflater.inflate(R.layout.item_tag, parent, false);
                             tv.setText(brand.getAttribute().get(position).getMName());
+                            tv.setEnabled(brand.getAttribute().get(position).getMQuantity() > 0);
                             return tv;
                         }
                     });
@@ -247,42 +252,7 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 if (attr.getMQuantity() == 0) {
                                     ToastUtil.showShort(mContext, R.string.attr_sold_out);
                                 } else {
-                                    NetWork.getsBaseApi()
-                                            .addToShoppingCart(PreferencesFactory.getUserPref().getId(),
-                                                    attr.getMID(), 1)
-                                            .subscribeOn(Schedulers.io())
-                                            .observeOn(AndroidSchedulers.mainThread())
-                                            .subscribe(new BaseActivityObserver<BaseResult>(mContext) {
-
-                                                @Override
-                                                public void onSubscribe(Disposable d) {
-                                                    super.onSubscribe(d);
-                                                    DialogUtil.showProgressDialog(new WeakReference<>(mContext), R.string.please_wait);
-                                                }
-
-                                                @Override
-                                                public void onNext(BaseResult baseResult) {
-                                                    super.onNext(baseResult);
-                                                    DialogUtil.dismissProgressDialog();
-                                                    ToastUtil.showShort(mContext,
-                                                            String.format(Locale.US, mContext.getString(R.string.get_into_cart), attr.getMName()));
-                                                    int clearPosition = checkPosition[0];
-                                                    if (clearPosition >= 0 && clearPosition < h.mTags.getChildCount()) {
-                                                        ((TagView) h.mTags.getChildAt(clearPosition)).setChecked(false);
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onError(Throwable e) {
-                                                    super.onError(e);
-                                                    DialogUtil.dismissProgressDialog();
-                                                    int clearPosition = checkPosition[0];
-                                                    if (clearPosition >= 0 && clearPosition < h.mTags.getChildCount()) {
-                                                        ((TagView) h.mTags.getChildAt(clearPosition)).setChecked(false);
-                                                    }
-                                                }
-                                            });
-
+                                    showTipDialog(attr, checkPosition, h);
                                 }
                             }
                         }
@@ -525,10 +495,76 @@ public class GoodsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public interface ShareListener {
 
-        void onShare(int position);
+        void onShare(Brand brand);
 
         void onRetry();
 
         void onEmpty();
+    }
+
+    private void showTipDialog(final Brand.Attribute attr, final int[] positions, final ViewHolder h) {
+        final Dialog dialog = new Dialog(mContext);
+        dialog.setContentView(R.layout.dialog_confirm_add_to_shopping_cart);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        TextView mCancel = dialog.findViewById(R.id.tv_cancel);
+        final TextView mConfirm = dialog.findViewById(R.id.tv_confirm);
+        final EditText mEt = dialog.findViewById(R.id.et_tip);
+        mCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        mConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(mEt.getText())) {
+                    ToastUtil.showShort(mContext, "请输入备注");
+                } else {
+                    addToShoppingCart(attr, positions, h, mEt.getText().toString());
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    private void addToShoppingCart(final Brand.Attribute attr, final int[] positions, final ViewHolder h, String tip) {
+        NetWork.getsBaseApi()
+                .addToShoppingCart(PreferencesFactory.getUserPref().getId(),
+                        attr.getMID(), 1, tip)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseActivityObserver<BaseResult>(mContext) {
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        super.onSubscribe(d);
+                        DialogUtil.showProgressDialog(new WeakReference<>(mContext), R.string.please_wait);
+                    }
+
+                    @Override
+                    public void onNext(BaseResult baseResult) {
+                        super.onNext(baseResult);
+                        DialogUtil.dismissProgressDialog();
+                        ToastUtil.showShort(mContext,
+                                String.format(Locale.US, mContext.getString(R.string.get_into_cart), attr.getMName()));
+                        int clearPosition = positions[0];
+                        if (clearPosition >= 0 && clearPosition < h.mTags.getChildCount()) {
+                            ((TagView) h.mTags.getChildAt(clearPosition)).setChecked(false);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        DialogUtil.dismissProgressDialog();
+                        int clearPosition = positions[0];
+                        if (clearPosition >= 0 && clearPosition < h.mTags.getChildCount()) {
+                            ((TagView) h.mTags.getChildAt(clearPosition)).setChecked(false);
+                        }
+                    }
+                });
     }
 }

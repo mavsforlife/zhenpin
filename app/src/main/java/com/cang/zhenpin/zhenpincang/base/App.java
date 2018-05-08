@@ -7,6 +7,8 @@ import com.squareup.leakcanary.RefWatcher;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import org.litepal.LitePal;
+
 
 /**
  * Created by victor on 2017/11/29.
@@ -22,6 +24,7 @@ public class App extends Application {
         super.onCreate();
         sInstance = this;
         registerToWX();
+        LitePal.initialize(this);
 
         if (!LeakCanary.isInAnalyzerProcess(this)) {
             LeakCanary.install(this);

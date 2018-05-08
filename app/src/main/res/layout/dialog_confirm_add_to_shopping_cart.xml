@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_10"
+        android:text="@string/confirm_add_to_shopping_cart"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_15"
+        android:layout_centerHorizontal="true"/>
+
+    <EditText
+        android:id="@+id/et_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title"
+        android:background="@drawable/bg_order_tip"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:padding="@dimen/dp_5"
+        android:hint="@string/hint_tip_to_shopping_cart"
+        android:textSize="@dimen/sp_14"/>
+
+    <LinearLayout
+        android:id="@+id/ll_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_tip"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            android:textColor="@color/line_dark"
+            android:text="不下单"/>
+
+        <View
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="@dimen/dp_24"
+            android:background="@color/line"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/dp_10"
+            android:textColor="@color/colorPrimary"
+            android:text="下单"/>
+    </LinearLayout>
+
+</RelativeLayout>
