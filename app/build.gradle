@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
     }
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.cang.zhenpin.zhenpincang"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 20000
         versionName "2.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -31,13 +31,13 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:support-v4:26.1.0'
-    api 'com.android.support:appcompat-v7:26.1.0'
-    api 'com.android.support:design:26.1.0'
-    api 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:support-v4:27.1.1'
+    api 'com.android.support:appcompat-v7:27.1.1'
+    api 'com.android.support:design:27.1.1'
+    api 'com.android.support.constraint:constraint-layout:1.1.0'
     api 'com.github.bumptech.glide:glide:4.3.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.3.1'
@@ -46,11 +46,11 @@ dependencies {
     api 'com.squareup.retrofit2:converter-scalars:2.1.0'
     api 'com.squareup.retrofit2:converter-gson:2.3.0'
     api 'com.squareup.retrofit2:retrofit:2.3.0'
-    api 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    api 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     api 'com.google.code.gson:gson:2.8.2'
     api 'com.hyman:flowlayout-lib:1.1.2'
     //RxJava的依赖包（我使用的最新版本）
-    api 'io.reactivex.rxjava2:rxjava:2.0.7'
+    api 'io.reactivex.rxjava2:rxjava:2.1.8'
     //RxAndroid的依赖包
     api 'io.reactivex.rxjava2:rxandroid:2.0.1'
     api 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
@@ -63,5 +63,5 @@ dependencies {
     implementation files('libs/alipaySdk-20170922.jar')
     debugApi 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-    compile project(path: ':addresspicker')
+    api project(path: ':addresspicker')
 }
