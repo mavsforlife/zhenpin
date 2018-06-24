@@ -179,7 +179,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }
                 });
 
-                holder.mPay.setVisibility(View.VISIBLE);
+                holder.mPay.setVisibility(View.GONE);
                 holder.mPay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -52,6 +52,7 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
 
     public static final int PAY_TYPE_WX = 1;
     public static final int PAY_TYPE_ALI = 2;
+    public static final int PAY_TYPE_OFFLINE = 3;
 
     public static final int TYPE_CART = 3;
     public static final int TYPE_ORDER = 4;
@@ -76,7 +77,7 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
     private TextView mSubmit;
     private TextView mTip;
 
-    private int mPayType = PAY_TYPE_WX;
+    private int mPayType = PAY_TYPE_OFFLINE;
     private int mAddType;
 
     @Override
@@ -237,12 +238,13 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
                 mPayType = PAY_TYPE_ALI;
                 break;
             case R.id.submit:
-                if (mOrderId != null) {
-                    payFromInvoice();
-                } else {
-                    addOrder();
-                }
-
+                //隐藏微信，支付宝支付，只有货到付款
+//                if (mOrderId != null) {
+//                    payFromInvoice();
+//                } else {
+//                    addOrder();
+//                }
+                addOrder();
                 break;
         }
     }
@@ -287,12 +289,18 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
                 .subscribe(mObserver);
     }
 
-    private void handlePay(AddOrder data) {
-        if (mPayType == PAY_TYPE_WX) {
-            App.mWxApi.sendReq(PayUtils.wxPay(data));
-        } else if (mPayType == PAY_TYPE_ALI) {
-            PayUtils.getAliPayResult(new WeakReference<>(this), data);
-        }
+//    private void handlePay(AddOrder data) {
+//        if (mPayType == PAY_TYPE_WX) {
+//            App.mWxApi.sendReq(PayUtils.wxPay(data));
+//        } else if (mPayType == PAY_TYPE_ALI) {
+//            PayUtils.getAliPayResult(new WeakReference<>(this), data);
+//        }
+//    }
+
+    //货到付款，直接成功
+    private void handlePayNew(BaseResult<AddOrder> data) {
+        ToastUtil.showShort(this, data.getMsg());
+        finish();
     }
 
     private BaseActivityObserver<BaseResult<AddOrder>> mObserver = new BaseActivityObserver<BaseResult<AddOrder>>(this) {
@@ -316,7 +324,8 @@ public class ConfirmOrderActivity extends AppCompatActivity implements View.OnCl
             if (mAddType == TYPE_CART) {
                 EventBus.getDefault().post(new UpdateShopCartEvent());
             }
-            handlePay(result.getData());
+//            handlePay(result.getData());
+            handlePayNew(result);
         }
 
         @Override
